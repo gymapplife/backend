@@ -12,7 +12,7 @@ repos:
     hooks:
     -   id: add-trailing-comma
 -   repo: git://github.com/pre-commit/pre-commit-hooks
-    sha: v0.9.4
+    sha: v0.9.5
     hooks:
     -   id: no-commit-to-branch
     -   id: trailing-whitespace
@@ -23,7 +23,7 @@ repos:
         args: [--remove]
     -   id: debug-statements
     -   id: requirements-txt-fixer
-    -   id: flake8
-        exclude: 'backend/(db_models/models.py|manage.py|backend/settings.py)'
     -   id: mixed-line-ending
         args: [--fix=lf]
+    -   id: flake8
+        exclude: 'backend/(db_models/models.py|manage.py|backend/settings.py)'
