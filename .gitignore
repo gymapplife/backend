@@ -1,0 +1,10 @@
+*.py[co]
+db.sqlite3
+
+# THIS IS TEMPORARY UNTIL WE SHARE A DATABASE
+backend/db_models/migrations/
+
+venv/
+__pycache__/
+
+.DS_Store
