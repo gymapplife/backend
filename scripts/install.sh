@@ -29,14 +29,14 @@ cd "$ROOT_PATH/backend"
 
 NO_DB=0
 if [ ! -f "$ROOT_PATH/backend/db.sqlite3" ]; then
-    NO_DB=1
+  NO_DB=1
 fi
 
 python manage.py makemigrations db_models
 python manage.py migrate
 
 if (($NO_DB)); then
-    COMMAND="
+  COMMAND="
 from django.contrib.auth.models import User
 from db_models.models.profile import Profile
 
@@ -46,6 +46,6 @@ user.last_name = 'Life'
 user.save()
 Profile.objects.create(user=user)
 "
-    echo "$COMMAND"
-    echo "$COMMAND" | python manage.py shell
+  echo "$COMMAND"
+  echo "$COMMAND" | python manage.py shell
 fi
