@@ -44,7 +44,17 @@ user = User.objects.create_superuser('admin@gymapp.life', 'admin@admin@gymapp.li
 user.first_name = 'Gymapp'
 user.last_name = 'Life'
 user.save()
-Profile.objects.create(user=user)
+
+# ID below is Gary's 2nd Facebook profile's ID
+Profile.objects.create(
+    id=100009542402759,
+    user=user,
+    goal=Profile.Goal.STRENGTH_TRAINING,
+    experience=Profile.Experience.ONE_TO_THREE,
+    weight=75,
+    height=180,
+    age=21,
+)
 "
   echo "$COMMAND"
   echo "$COMMAND" | python manage.py shell
