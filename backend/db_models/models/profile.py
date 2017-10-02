@@ -35,8 +35,12 @@ class Profile(models.Model):
         choices=_experience_choices,
     )
 
+    # Body weight in kg
     weight = models.PositiveSmallIntegerField()
+
+    # Height in cm
     height = models.PositiveSmallIntegerField()
+
     age = models.PositiveSmallIntegerField()
 
     def __str__(self):
