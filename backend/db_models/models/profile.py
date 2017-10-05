@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.db import models
 from utils.namedtuple import namedtuple_and_choices_from_kwargs
 
@@ -23,8 +22,6 @@ class Profile(models.Model):
     # This is their Facebook user id
     id = models.BigIntegerField(primary_key=True, editable=False)
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-
     goal = models.CharField(
         max_length=len(max(Goal._fields, key=len)),
         choices=_goal_choices,
@@ -40,11 +37,3 @@ class Profile(models.Model):
 
     # Height in cm
     height = models.PositiveSmallIntegerField()
-
-    age = models.PositiveSmallIntegerField()
-
-    def __str__(self):
-        first_name = self.user.first_name
-        last_name = self.user.last_name
-        email = self.user.email
-        return f'{first_name} {last_name} <{email}>'

@@ -7,8 +7,9 @@ from utils.response import unauthorized_response
 from backend.settings import DEBUG
 
 
-def _basic_auth_is_valid(request):
-    """Returns False, for bad auth; or request with fb_id and fb_token populated
+def _request_with_fb_auth_or_none(request):
+    """Returns request with fb_id and fb_token populated
+    or None if bad auth
 
     Inspired by:
     https://gist.github.com/codeinthehole/4732233
@@ -23,24 +24,26 @@ def _basic_auth_is_valid(request):
                 request.fb_id = uid
                 request.fb_token = token
                 return request
-    return False
+    return None
 
 
 def fb_auth_required(view):
     """View method decorator
 
+    Adds profile to request if basic auth is valid
+    Returns 401 otherwise
+
     Inspired by:
     https://simpleisbetterthancomplex.com/2015/12/07/working-with-django-view-decorators.html
     """
     def wrap(request, *args, **kwargs):
-        request = _basic_auth_is_valid(request)
+        request = _request_with_fb_auth_or_none(request)
         if request:
             try:
                 profile = Profile.objects.get(id=request.fb_id)
             except:
                 return unauthorized_response()
             request.profile = profile
-            request.user = profile.user
             return view(request, *args, **kwargs)
         return unauthorized_response()
     wrap.__doc__ = view.__doc__
@@ -53,7 +56,7 @@ def fb_auth_required_no_profile(view):
     Made specifically for creating profiles
     """
     def wrap(request, *args, **kwargs):
-        request = _basic_auth_is_valid(request)
+        request = _request_with_fb_auth_or_none(request)
         if request:
             return view(request, *args, **kwargs)
         return unauthorized_response()

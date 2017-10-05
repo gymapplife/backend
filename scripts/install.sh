@@ -38,23 +38,8 @@ python manage.py migrate
 if (($NO_DB)); then
   COMMAND="
 from django.contrib.auth.models import User
-from db_models.models.profile import Profile
 
-user = User.objects.create_superuser('admin@gymapp.life', 'admin@admin@gymapp.life', 'password')
-user.first_name = 'Gymapp'
-user.last_name = 'Life'
-user.save()
-
-# ID below is Gary's 2nd Facebook profile's ID
-Profile.objects.create(
-    id=100009542402759,
-    user=user,
-    goal=Profile.Goal.STRENGTH_TRAINING,
-    experience=Profile.Experience.ONE_TO_THREE,
-    weight=75,
-    height=180,
-    age=21,
-)
+user = User.objects.create_superuser('admin@gymapp.life', 'admin@gymapp.life', 'password')
 "
   echo "$COMMAND"
   echo "$COMMAND" | python manage.py shell
