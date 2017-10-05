@@ -8,7 +8,7 @@ class Profile(models.Model):
         'Goal',
         STRENGTH_TRAINING='Strength Training',
         LOSE_WEIGHT='Lose Weight',
-        CADRIO='Cardio',
+        CARDIO='Cardio',
     )
 
     Experience, _experience_choices = namedtuple_and_choices_from_kwargs(

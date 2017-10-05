@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'db_models.apps.DBModelsConfig',
 ]
 
@@ -122,6 +123,10 @@ STATIC_URL = '/static/'
 
 BASIC_AUTH_REALM = 'GymApp.life'
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [],
+    'DEFAULT_PERMISSION_CLASSES': [],
+}
 
 # Facebook
 

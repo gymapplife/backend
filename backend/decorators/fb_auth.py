@@ -2,9 +2,11 @@ import base64
 
 from db_models.models.profile import Profile
 from lib.fb_token import fb_token_is_valid
-from utils.response import unauthorized_response
+from rest_framework import status
+from rest_framework.response import Response
+from utils.response import HttpResponseUnauthorized
 
-from backend.settings import DEBUG
+# from backend.settings import DEBUG
 
 
 def _request_with_fb_auth_or_none(request):
@@ -20,7 +22,7 @@ def _request_with_fb_auth_or_none(request):
             uid, token = base64.b64decode(
                 auth[1],
             ).decode('utf-8').split(':')
-            if fb_token_is_valid(uid, token) or DEBUG:
+            if fb_token_is_valid(uid, token):  # or DEBUG:
                 request.fb_id = uid
                 request.fb_token = token
                 return request
@@ -30,8 +32,9 @@ def _request_with_fb_auth_or_none(request):
 def fb_auth_required(view):
     """View method decorator
 
-    Adds profile to request if basic auth is valid
-    Returns 401 otherwise
+    Adds profile to request
+    Returns 401 if invalid auth
+    Returns 403 if no profile associated with fb_id
 
     Inspired by:
     https://simpleisbetterthancomplex.com/2015/12/07/working-with-django-view-decorators.html
@@ -40,12 +43,11 @@ def fb_auth_required(view):
         request = _request_with_fb_auth_or_none(request)
         if request:
             try:
-                profile = Profile.objects.get(id=request.fb_id)
+                request.profile = Profile.objects.get(id=request.fb_id)
             except:
-                return unauthorized_response()
-            request.profile = profile
+                return Response(status=status.HTTP_403_FORBIDDEN)
             return view(request, *args, **kwargs)
-        return unauthorized_response()
+        return HttpResponseUnauthorized()
     wrap.__doc__ = view.__doc__
     wrap.__name__ = view.__name__
     return wrap
@@ -59,7 +61,7 @@ def fb_auth_required_no_profile(view):
         request = _request_with_fb_auth_or_none(request)
         if request:
             return view(request, *args, **kwargs)
-        return unauthorized_response()
+        return HttpResponseUnauthorized()
     wrap.__doc__ = view.__doc__
     wrap.__name__ = view.__name__
     return wrap

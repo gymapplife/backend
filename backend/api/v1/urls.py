@@ -1,4 +1,4 @@
-from api.v1.views.profile import ProfileView
+from api.v1.endpoints.profile import ProfileView
 from django.conf.urls import url
 
 urlpatterns = [
