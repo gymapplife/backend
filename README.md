@@ -38,6 +38,12 @@ pip3.6 install virtualenv
 apt install build-essential
 ```
 
+### Environment Variables
+
+```bash
+export FB_APP_SECRET='https://developers.facebook.com/apps/457054341361327/dashboard/'
+```
+
 ### Make commands
 
 1. `make` / `make install`

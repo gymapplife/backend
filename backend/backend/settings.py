@@ -36,6 +36,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework_swagger',
     'db_models.apps.DBModelsConfig',
 ]
 
@@ -118,3 +120,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+BASIC_AUTH_REALM = 'GymApp.life'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [],
+    'DEFAULT_PERMISSION_CLASSES': [],
+}
+
+# Facebook
+
+FB_APP_ID = '457054341361327'
+FB_APP_SECRET = os.environ['FB_APP_SECRET']
+FB_GRAPH_VERSION = '2.1'

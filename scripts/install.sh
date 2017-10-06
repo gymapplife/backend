@@ -38,13 +38,8 @@ python manage.py migrate
 if (($NO_DB)); then
   COMMAND="
 from django.contrib.auth.models import User
-from db_models.models.profile import Profile
 
-user = User.objects.create_superuser('admin@gymapp.life', 'admin@admin@gymapp.life', 'password')
-user.first_name = 'Gymapp'
-user.last_name = 'Life'
-user.save()
-Profile.objects.create(user=user)
+user = User.objects.create_superuser('admin@gymapp.life', 'admin@gymapp.life', 'password')
 "
   echo "$COMMAND"
   echo "$COMMAND" | python manage.py shell
