@@ -15,16 +15,23 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
+if os.environ.get('DJANGO_DEBUG') == 'TRUE':
+    SECRET_KEY = 'q~wWC{PWGL2mOSz{OGLk9bal$~R*nhN5PX_cja4=TI@:Cvc>M4'
+    DEBUG = True
+else:
+    SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
+    DEBUG = False
+    SECURE_HSTS_SECONDS = 31536000
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_BROWSER_XSS_FILTER = True
+    # SECURE_SSL_REDIRECT = True
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    X_FRAME_OPTIONS = 'DENY'
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'q~wWC{PWGL2mOSz{OGLk9bal$~R*nhN5PX_cja4=TI@:Cvc>M4'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -120,6 +127,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/var/www/gymapp.life/static/'
 
 
 BASIC_AUTH_REALM = 'GymApp.life'
@@ -129,8 +137,8 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [],
 }
 
+
 # Facebook
 
 FB_APP_ID = '457054341361327'
-FB_APP_SECRET = os.environ['FB_APP_SECRET']
 FB_GRAPH_VERSION = '2.1'
