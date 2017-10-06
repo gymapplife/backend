@@ -23,6 +23,17 @@ class ProfileCreateSerializer(ProfileSerializer):
 class ProfileView(APIView):
     def get(self, request):
         """Get profile
+
+        #### Sample Response
+        ```
+        {
+            "id": integer,
+            "goal": string,
+            "experience": string,
+            "weight": integer,
+            "height": integer
+        }
+        ```
         """
         try:
             profile = Profile.objects.get(id=request.fb_id)
@@ -34,7 +45,24 @@ class ProfileView(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        """Create a profile
+        """Create profile
+
+        #### Parameters
+        * goal: string
+        * experience: string
+        * weight: integer
+        * height: integer
+
+        #### Sample Response
+        ```
+        {
+            "id": integer,
+            "goal": string,
+            "experience": string,
+            "weight": integer,
+            "height": integer
+        }
+        ```
         """
         try:
             Profile.objects.get(id=request.fb_id)
@@ -45,9 +73,10 @@ class ProfileView(APIView):
         except:
             pass
 
-        request.data._mutable = True
-        request.data['id'] = request.fb_id
-        request.data._mutable = False
+        if request.data:
+            request.data._mutable = True
+            request.data['id'] = request.fb_id
+            request.data._mutable = False
 
         serializer = ProfileCreateSerializer(data=request.data)
 
@@ -59,6 +88,23 @@ class ProfileView(APIView):
 
     def patch(self, request):
         """Update profile
+
+        #### Parameters
+        * goal: string (optional)
+        * experience: string (optional)
+        * weight: integer (optional)
+        * height: integer (optional)
+
+        #### Sample Response
+        ```
+        {
+            "id": integer,
+            "goal": string,
+            "experience": string,
+            "weight": integer,
+            "height": integer
+        }
+        ```
         """
         try:
             profile = Profile.objects.get(id=request.fb_id)

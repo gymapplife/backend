@@ -1,5 +1,3 @@
-import time
-
 import facebook
 
 from backend.settings import FB_APP_ID
@@ -9,33 +7,29 @@ from backend.settings import FB_GRAPH_VERSION
 SCOPES = {'user_friends', 'public_profile'}
 
 
-def fb_token_is_valid(uid, token):
+def fb_auth_error(uid, token):
     uid = str(uid)
     graph = facebook.GraphAPI(access_token=token, version=FB_GRAPH_VERSION)
 
-    # May throw -- GraphAPIError: Invalid OAuth access token.
+    # May throw GraphAPIError for invalid or expired token
     try:
         data = graph.get_object(id='debug_token', input_token=token)['data']
-    except:
-        return False
+    except Exception as e:
+        return str(e)
 
     if not data.get('is_valid'):
-        return False
+        return 'Data received from Facebook was not valid.'
 
     if data.get('app_id') != FB_APP_ID:
-        return False
+        return 'Token for wrong application.'
 
     if data.get('type') != 'USER':
-        return False
+        return 'Not a user token.'
     if data.get('user_id') != uid:
-        return False
-
-    expires_at = data.get('expires_at')
-    if not expires_at or time.time() > expires_at:
-        return False
+        return 'Token does not belong to user.'
 
     scopes = data.get('scopes')
     if not scopes or not set(scopes) <= SCOPES:
-        return False
+        return f'Missing scope: {scopes}'
 
-    return True
+    return None

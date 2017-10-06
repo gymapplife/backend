@@ -1,12 +1,16 @@
 import base64
+import logging
 
 from db_models.models.profile import Profile
-from lib.fb_token import fb_token_is_valid
+from lib.fb_auth import fb_auth_error
 from rest_framework import status
 from rest_framework.response import Response
 from utils.response import HttpResponseUnauthorized
 
-# from backend.settings import DEBUG
+from backend.settings import DEBUG
+
+
+logger = logging.getLogger(__name__)
 
 
 def _request_with_fb_auth_or_none(request):
@@ -22,7 +26,11 @@ def _request_with_fb_auth_or_none(request):
             uid, token = base64.b64decode(
                 auth[1],
             ).decode('utf-8').split(':')
-            if fb_token_is_valid(uid, token):  # or DEBUG:
+            auth_error = fb_auth_error(uid, token)
+            if DEBUG and auth_error:
+                logger.warning('Not returning 401 because DEBUG=True')
+                logger.warning(auth_error)
+            if not auth_error or DEBUG:
                 request.fb_id = uid
                 request.fb_token = token
                 return request
