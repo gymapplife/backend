@@ -14,9 +14,10 @@ class Profile(models.Model):
     Experience, _experience_choices = namedtuple_and_choices_from_kwargs(
         'Experience',
         NEW='New',
-        LT_ONE='Less than 1 year',
-        ONE_TO_THREE='1 to 3 years',
-        GT_THREE='More than 3 years',
+        BEGINNER='Beginner',
+        NOVICE='Novice',
+        INTERMEDIATE='Intermediate',
+        ADVANCED='Advanced',
     )
 
     # This is their Facebook user id

@@ -1,11 +1,9 @@
+from api.views import AuthedAPIView
 from db_models.models.profile import Profile
-from decorators.fb_auth import fb_auth_required_no_profile
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import ensure_csrf_cookie
 from rest_framework import serializers
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.views import APIView
+from utils.response import NoProfileForbiddenResponse
 
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -18,9 +16,7 @@ class ProfileCreateSerializer(ProfileSerializer):
     id = serializers.IntegerField()
 
 
-@method_decorator(fb_auth_required_no_profile, name='dispatch')
-@method_decorator(ensure_csrf_cookie, name='dispatch')
-class ProfileView(APIView):
+class ProfileView(AuthedAPIView):
     def get(self, request):
         """Get profile
 
@@ -38,7 +34,7 @@ class ProfileView(APIView):
         try:
             profile = Profile.objects.get(id=request.fb_id)
         except:
-            return Response(status=status.HTTP_403_FORBIDDEN)
+            return NoProfileForbiddenResponse()
 
         serializer = ProfileSerializer(profile)
 
@@ -109,7 +105,7 @@ class ProfileView(APIView):
         try:
             profile = Profile.objects.get(id=request.fb_id)
         except:
-            return Response(status=status.HTTP_403_FORBIDDEN)
+            return NoProfileForbiddenResponse()
 
         serializer = ProfileSerializer(profile, data=request.data)
 
@@ -125,7 +121,7 @@ class ProfileView(APIView):
         try:
             profile = Profile.objects.get(id=request.fb_id)
         except:
-            return Response(status=status.HTTP_403_FORBIDDEN)
+            return NoProfileForbiddenResponse()
 
         profile.delete()
 
