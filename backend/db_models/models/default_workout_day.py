@@ -4,7 +4,7 @@ from db_models.models.workout_program import WorkoutProgram
 from django.db import models
 
 
-class WorkoutDay(SetsRepsWeights):
+class DefaultWorkoutDay(SetsRepsWeights):
 
     workout_program = models.ForeignKey(
         WorkoutProgram,

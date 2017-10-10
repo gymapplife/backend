@@ -3,6 +3,8 @@ from django.db import models
 
 
 class DefaultWorkoutProgram(models.Model):
+    """Just a list of default workout programs
+    """
 
     workout_program = models.OneToOneField(
         WorkoutProgram,

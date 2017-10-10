@@ -1,8 +1,8 @@
 from db_models.models.custom_workout_day import CustomWorkoutDay
+from db_models.models.default_workout_day import DefaultWorkoutDay
 from db_models.models.default_workout_program import DefaultWorkoutProgram
 from db_models.models.exercise import Exercise
 from db_models.models.profile import Profile
-from db_models.models.workout_day import WorkoutDay
 from db_models.models.workout_program import WorkoutProgram
 from django.contrib import admin
 
@@ -31,8 +31,8 @@ class DefaultWorkoutProgramAdmin(admin.ModelAdmin):
     list_display = ('name', 'length')
 
 
-@admin.register(WorkoutDay)
-class WorkoutDayAdmin(admin.ModelAdmin):
+@admin.register(DefaultWorkoutDay)
+class DefaultWorkoutDayAdmin(admin.ModelAdmin):
 
     list_display = (
         'workout_program',
@@ -48,8 +48,8 @@ class WorkoutDayAdmin(admin.ModelAdmin):
 class CustomWorkoutDayAdmin(admin.ModelAdmin):
 
     list_display = (
-        'workout_day',
         'profile',
+        'workout_program',
         'exercise',
         'day',
         'sets',
