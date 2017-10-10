@@ -7,16 +7,19 @@ from utils.response import NoProfileForbiddenResponse
 
 
 class ProfileSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Profile
         fields = ('id', 'goal', 'experience', 'weight', 'height')
 
 
 class ProfileCreateSerializer(ProfileSerializer):
+
     id = serializers.IntegerField()
 
 
 class ProfileView(AuthedAPIView):
+
     def get(self, request):
         """Get profile
 

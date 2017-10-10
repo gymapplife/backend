@@ -6,4 +6,5 @@ from rest_framework.views import APIView
 
 @method_decorator(ensure_csrf_cookie, name='dispatch')
 class AuthedAPIView(FacebookAuthMixin, APIView):
+
     pass

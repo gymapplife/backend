@@ -9,26 +9,31 @@ from django.contrib import admin
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
+
     list_display = ('goal', 'experience', 'weight', 'height')
 
 
 @admin.register(Exercise)
 class ExerciseAdmin(admin.ModelAdmin):
+
     list_display = ('name',)
 
 
 @admin.register(WorkoutProgram)
 class WorkoutProgramAdmin(admin.ModelAdmin):
+
     list_display = ('name', 'length')
 
 
 @admin.register(DefaultWorkoutProgram)
 class DefaultWorkoutProgramAdmin(admin.ModelAdmin):
+
     list_display = ('name', 'length')
 
 
 @admin.register(WorkoutDay)
 class WorkoutDayAdmin(admin.ModelAdmin):
+
     list_display = (
         'workout_program',
         'exercise',
@@ -41,6 +46,7 @@ class WorkoutDayAdmin(admin.ModelAdmin):
 
 @admin.register(CustomWorkoutDay)
 class CustomWorkoutDayAdmin(admin.ModelAdmin):
+
     list_display = (
         'workout_day',
         'profile',

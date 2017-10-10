@@ -11,6 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class FacebookAuthMixin:
+
     def dispatch(self, request, *args, **kwargs):
         """View mixin for Basic auth -- facebook_id:facebook_token
 
