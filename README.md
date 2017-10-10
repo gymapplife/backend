@@ -88,7 +88,7 @@ If you add new functionality, please create new tests accordingly.
 
 ### Visualizing DB tables
 
-`python manage.py graph_models -g -o ~/db_tables.png`
+`python manage.py graph_models -g -o ~/db_tables.png db_models`
 
 ## Authors
 
