@@ -16,7 +16,7 @@ class ProfileAdmin(admin.ModelAdmin):
 @admin.register(Exercise)
 class ExerciseAdmin(admin.ModelAdmin):
 
-    list_display = ('name',)
+    list_display = ('name', 'primary_muscle')
 
 
 @admin.register(WorkoutProgram)
