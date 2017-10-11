@@ -1,11 +1,11 @@
-from db_models.models.abstract.sets_reps_weights import SetsRepsWeights
+from db_models.models.abstract.workout_day import WorkoutDay
 from db_models.models.exercise import Exercise
 from db_models.models.profile import Profile
 from db_models.models.workout_program import WorkoutProgram
 from django.db import models
 
 
-class CustomWorkoutDay(SetsRepsWeights):
+class CustomWorkoutDay(WorkoutDay):
 
     profile = models.ForeignKey(
         Profile,

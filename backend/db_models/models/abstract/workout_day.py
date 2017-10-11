@@ -2,10 +2,13 @@ from db_models.validators import validate_comma_separated_ints
 from django.db import models
 
 
-class SetsRepsWeights(models.Model):
+class WorkoutDay(models.Model):
 
     class Meta:
         abstract = True
+
+    # 1, 2, 3, 4, 5, 6, 7
+    day_of_week = models.PositiveSmallIntegerField()
 
     # Comma seperated string
     # eg. 5,5,5,5,5
