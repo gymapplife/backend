@@ -10,7 +10,14 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ('id', 'goal', 'experience', 'weight', 'height')
+        fields = (
+            'id',
+            'goal',
+            'experience',
+            'weight',
+            'height',
+            'current_workout_program',
+        )
 
 
 class ProfileCreateSerializer(ProfileSerializer):
@@ -30,7 +37,8 @@ class ProfileView(AuthedAPIView):
             "goal": string,
             "experience": string,
             "weight": integer,
-            "height": integer
+            "height": integer,
+            "current_workout_program": integer|null
         }
         ```
         """
@@ -51,6 +59,7 @@ class ProfileView(AuthedAPIView):
         * experience: string
         * weight: integer
         * height: integer
+        * current_workout_program: integer (optional)
 
         #### Sample Response
         ```
@@ -59,7 +68,8 @@ class ProfileView(AuthedAPIView):
             "goal": string,
             "experience": string,
             "weight": integer,
-            "height": integer
+            "height": integer,
+            "current_workout_program": integer|null
         }
         ```
         """
@@ -93,6 +103,7 @@ class ProfileView(AuthedAPIView):
         * experience: string (optional)
         * weight: integer (optional)
         * height: integer (optional)
+        * current_workout_program: integer (optional)
 
         #### Sample Response
         ```
@@ -101,7 +112,8 @@ class ProfileView(AuthedAPIView):
             "goal": string,
             "experience": string,
             "weight": integer,
-            "height": integer
+            "height": integer,
+            "current_workout_program": integer|null
         }
         ```
         """

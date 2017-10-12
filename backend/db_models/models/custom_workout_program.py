@@ -1,9 +1,9 @@
 from db_models.models.profile import Profile
-from db_models.models.workout_day import WorkoutDay
+from db_models.models.workout_program import WorkoutProgram
 from django.db import models
 
 
-class CustomWorkoutDay(WorkoutDay):
+class CustomWorkoutProgram(WorkoutProgram):
 
     profile = models.ForeignKey(
         Profile,

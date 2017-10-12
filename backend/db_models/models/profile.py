@@ -38,3 +38,6 @@ class Profile(models.Model):
 
     # Height in cm
     height = models.PositiveSmallIntegerField()
+
+    def __str__(self):
+        return str(self.id)

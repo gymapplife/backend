@@ -46,4 +46,5 @@ Profile.objects.create(id=123, goal='CARDIO', experience='NEW', weight=75, heigh
   echo "$COMMAND"
   echo "$COMMAND" | python manage.py shell
   python manage.py loaddata db_models/fixtures/exercise.json
+  python manage.py loaddata db_models/fixtures/day_of_week.json
 fi

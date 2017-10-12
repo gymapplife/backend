@@ -1,14 +1,28 @@
+from db_models.models.day_of_week import DayOfWeek
+from db_models.models.exercise import Exercise
+from db_models.models.workout_program import WorkoutProgram
 from db_models.validators import validate_comma_separated_ints
 from django.db import models
 
 
 class WorkoutDay(models.Model):
 
-    class Meta:
-        abstract = True
+    workout_program = models.ForeignKey(
+        WorkoutProgram,
+        on_delete=models.CASCADE,
+        db_index=True,
+    )
 
-    # 1, 2, 3, 4, 5, 6, 7
-    day_of_week = models.PositiveSmallIntegerField()
+    exercise = models.ForeignKey(
+        Exercise,
+        on_delete=models.CASCADE,
+    )
+
+    day = models.PositiveSmallIntegerField(
+        db_index=True,
+    )
+
+    day_of_week = models.ForeignKey(DayOfWeek)
 
     # Comma seperated string
     # eg. 5,5,5,5,5
