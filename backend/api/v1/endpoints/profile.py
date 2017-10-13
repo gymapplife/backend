@@ -125,6 +125,7 @@ class ProfileView(AuthedAPIView):
 
         Only one of `current_workout_program`
         and `current_custom_workout_program` may be populated.
+
         To switch types, explicitly set one to `null`.
 
         #### Sample Response

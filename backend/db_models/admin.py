@@ -62,7 +62,6 @@ class CustomWorkoutProgramAdmin(admin.ModelAdmin):
 class CustomWorkoutDayAdmin(admin.ModelAdmin):
 
     list_display = (
-        'profile',
         'workout_program',
         'exercise',
         'day',
