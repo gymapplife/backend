@@ -35,7 +35,7 @@ sudo pip3.6 install virtualenv
 ```
 3. `make`
 ```bash
-sudo apt install build-essential
+sudo apt install make
 ```
 
 4. `graphviz` (optional, for visualizing DB tables)
@@ -49,8 +49,17 @@ rm graphviz_2.38.0-1~saucy_amd64.deb graphviz-dev_2.38.0-1~saucy_all.deb
 
 ### Environment Variables
 
-```bash
-export FB_APP_SECRET='https://developers.facebook.com/apps/457054341361327/dashboard/'
+#### Development
+
+```
+export DJANGO_DEBUG='TRUE'
+```
+
+#### Production
+
+```
+export DJANGO_DEBUG='FALSE'
+export DJANGO_SECRET_KEY=???
 ```
 
 ### Make commands
