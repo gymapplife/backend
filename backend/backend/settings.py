@@ -25,7 +25,7 @@ SECRET_KEY = 'q~wWC{PWGL2mOSz{OGLk9bal$~R*nhN5PX_cja4=TI@:Cvc>M4'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -136,5 +136,4 @@ REST_FRAMEWORK = {
 # Facebook
 
 FB_APP_ID = '457054341361327'
-FB_APP_SECRET = os.environ['FB_APP_SECRET']
 FB_GRAPH_VERSION = '2.1'

@@ -28,27 +28,6 @@ class ProfileCreateSerializer(ProfileSerializer):
     id = serializers.IntegerField()
 
 
-def _select_workout_program_exception_response(e):
-    s = str(e)
-    return Response(
-        {
-            'current_workout_program': s,
-            'current_custom_workout_program': s,
-        },
-        status=status.HTTP_400_BAD_REQUEST,
-    )
-
-
-def _select_custom_workout_program_not_owner_response():
-    return Response(
-        {
-            'current_custom_workout_program': 'This profile does not '
-            + 'own the requested custom workout program.',
-        },
-        status=status.HTTP_400_BAD_REQUEST,
-    )
-
-
 class ProfileView(AuthedAPIView):
 
     def get(self, request):
@@ -79,17 +58,12 @@ class ProfileView(AuthedAPIView):
     def post(self, request):
         """Create profile
 
-        Only one of `current_workout_program`
-        and `current_custom_workout_program` may be populated.
-        To switch types, explicitly set one to `null`.
-
-        #### Parameters
+        #### Body Parameters
         * goal: string
         * experience: string
         * weight: integer
         * height: integer
         * current_workout_program: integer (optional)
-        * current_custom_workout_program: integer (optional)
 
         #### Sample Response
         ```
@@ -100,7 +74,7 @@ class ProfileView(AuthedAPIView):
             "weight": integer,
             "height": integer,
             "current_workout_program": integer|null,
-            "current_custom_workout_program": integer|null
+            "current_custom_workout_program": null
         }
         ```
         """
@@ -117,10 +91,8 @@ class ProfileView(AuthedAPIView):
             if 'current_custom_workout_program' in request.data:
                 return Response(
                     {
-                        'current_custom_workout_program': (
-                            'Can not select custom workout program'
-                            + 'on profile creation.'
-                        ),
+                        'current_custom_workout_program': 'Can not select '
+                        + 'on profile creation.',
                     },
                     status=status.HTTP_400_BAD_REQUEST,
                 )
@@ -132,18 +104,18 @@ class ProfileView(AuthedAPIView):
         serializer = ProfileCreateSerializer(data=request.data)
 
         if serializer.is_valid():
-            try:
-                serializer.save()
-            except SelectWorkoutProgramException as e:
-                return _select_workout_program_exception_response(e)
+            serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        errors = dict(serializer.errors)
+        errors.pop('id', None)
+
+        return Response(errors, status=status.HTTP_400_BAD_REQUEST)
 
     def patch(self, request):
         """Update profile
 
-        #### Parameters
+        #### Body Parameters
         * goal: string (optional)
         * experience: string (optional)
         * weight: integer (optional)
@@ -174,18 +146,17 @@ class ProfileView(AuthedAPIView):
             return NoProfileForbiddenResponse()
 
         if request.data and 'current_custom_workout_program' in request.data:
+            pk = request.data['current_custom_workout_program']
             try:
                 if not CustomWorkoutProgram.objects.get(
-                    id=request.data['current_custom_workout_program'],
-                ).profile == profile.id:
+                    id=pk,
+                ).profile.id == profile.id:
                     raise Exception()
             except:
+                msg = f'Invalid pk "{pk}" - object does not exist.'
                 return Response(
                     {
-                        'current_custom_workout_program': (
-                            'This profile does not own the '
-                            + 'requested custom workout program.'
-                        ),
+                        'current_custom_workout_program': msg,
                     },
                     status=status.HTTP_400_BAD_REQUEST,
                 )
@@ -196,7 +167,14 @@ class ProfileView(AuthedAPIView):
             try:
                 serializer.save()
             except SelectWorkoutProgramException as e:
-                return _select_workout_program_exception_response(e)
+                s = str(e)
+                return Response(
+                    {
+                        'current_workout_program': s,
+                        'current_custom_workout_program': s,
+                    },
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
 
             return Response(serializer.data)
 

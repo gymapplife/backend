@@ -14,11 +14,19 @@ class AbstractWorkoutDay(models.Model):
         on_delete=models.CASCADE,
     )
 
+    @property
+    def exercise_name(self):
+        return self.exercise.name
+
     day = models.PositiveSmallIntegerField(
         db_index=True,
     )
 
     day_of_week = models.ForeignKey(DayOfWeek)
+
+    @property
+    def day_of_week_name(self):
+        return self.day_of_week.name
 
     # Comma seperated string
     # eg. 5,5,5,5,5
