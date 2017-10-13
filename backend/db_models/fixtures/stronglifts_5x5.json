@@ -1,0 +1,1090 @@
+[
+    {
+        "model": "db_models.workoutprogram",
+        "pk": 1,
+        "fields": {
+            "name": "StrongLifts 5x5",
+            "length": 30
+        }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 0,
+        "fields": {
+             "workout_program":1,
+             "exercise":0,
+             "day":1,
+             "day_of_week":1,
+             "reps":"5,5,5,5,5",
+             "weights":"45,45,45,45,45"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 1,
+        "fields": {
+             "workout_program":1,
+             "exercise":1,
+             "day":1,
+             "day_of_week":1,
+             "reps":"5,5,5,5,5",
+             "weights":"45,45,45,45,45"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 2,
+        "fields": {
+             "workout_program":1,
+             "exercise":2,
+             "day":1,
+             "day_of_week":1,
+             "reps":"5,5,5,5,5",
+             "weights":"45,45,45,45,45"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 3,
+        "fields": {
+             "workout_program":1,
+             "exercise":0,
+             "day":2,
+             "day_of_week":3,
+             "reps":"5,5,5,5,5",
+             "weights":"50,50,50,50,50"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 4,
+        "fields": {
+             "workout_program":1,
+             "exercise":3,
+             "day":2,
+             "day_of_week":3,
+             "reps":"5,5,5,5,5",
+             "weights":"45,45,45,45,45"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 5,
+        "fields": {
+             "workout_program":1,
+             "exercise":4,
+             "day":2,
+             "day_of_week":3,
+             "reps":"5",
+             "weights":"95"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 6,
+        "fields": {
+             "workout_program":1,
+             "exercise":0,
+             "day":3,
+             "day_of_week":5,
+             "reps":"5,5,5,5,5",
+             "weights":"55,55,55,55,55"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 7,
+        "fields": {
+             "workout_program":1,
+             "exercise":1,
+             "day":3,
+             "day_of_week":5,
+             "reps":"5,5,5,5,5",
+             "weights":"50,50,50,50,50"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 8,
+        "fields": {
+             "workout_program":1,
+             "exercise":2,
+             "day":3,
+             "day_of_week":5,
+             "reps":"5,5,5,5,5",
+             "weights":"50,50,50,50,50"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 9,
+        "fields": {
+             "workout_program":1,
+             "exercise":0,
+             "day":4,
+             "day_of_week":1,
+             "reps":"5,5,5,5,5",
+             "weights":"60,60,60,60,60"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 10,
+        "fields": {
+             "workout_program":1,
+             "exercise":3,
+             "day":4,
+             "day_of_week":1,
+             "reps":"5,5,5,5,5",
+             "weights":"50,50,50,50,50"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 11,
+        "fields": {
+             "workout_program":1,
+             "exercise":4,
+             "day":4,
+             "day_of_week":1,
+             "reps":"5",
+             "weights":"105"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 12,
+        "fields": {
+             "workout_program":1,
+             "exercise":0,
+             "day":5,
+             "day_of_week":3,
+             "reps":"5,5,5,5,5",
+             "weights":"65,65,65,65,65"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 13,
+        "fields": {
+             "workout_program":1,
+             "exercise":1,
+             "day":5,
+             "day_of_week":3,
+             "reps":"5,5,5,5,5",
+             "weights":"55,55,55,55,55"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 14,
+        "fields": {
+             "workout_program":1,
+             "exercise":2,
+             "day":5,
+             "day_of_week":3,
+             "reps":"5,5,5,5,5",
+             "weights":"55,55,55,55,55"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 15,
+        "fields": {
+             "workout_program":1,
+             "exercise":0,
+             "day":6,
+             "day_of_week":5,
+             "reps":"5,5,5,5,5",
+             "weights":"70,70,70,70,70"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 16,
+        "fields": {
+             "workout_program":1,
+             "exercise":3,
+             "day":6,
+             "day_of_week":5,
+             "reps":"5,5,5,5,5",
+             "weights":"55,55,55,55,55"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 17,
+        "fields": {
+             "workout_program":1,
+             "exercise":4,
+             "day":6,
+             "day_of_week":5,
+             "reps":"5",
+             "weights":"115"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 18,
+        "fields": {
+             "workout_program":1,
+             "exercise":0,
+             "day":7,
+             "day_of_week":1,
+             "reps":"5,5,5,5,5",
+             "weights":"75,75,75,75,75"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 19,
+        "fields": {
+             "workout_program":1,
+             "exercise":1,
+             "day":7,
+             "day_of_week":1,
+             "reps":"5,5,5,5,5",
+             "weights":"60,60,60,60,60"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 20,
+        "fields": {
+             "workout_program":1,
+             "exercise":2,
+             "day":7,
+             "day_of_week":1,
+             "reps":"5,5,5,5,5",
+             "weights":"60,60,60,60,60"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 21,
+        "fields": {
+             "workout_program":1,
+             "exercise":0,
+             "day":8,
+             "day_of_week":3,
+             "reps":"5,5,5,5,5",
+             "weights":"80,80,80,80,80"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 22,
+        "fields": {
+             "workout_program":1,
+             "exercise":3,
+             "day":8,
+             "day_of_week":3,
+             "reps":"5,5,5,5,5",
+             "weights":"60,60,60,60,60"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 23,
+        "fields": {
+             "workout_program":1,
+             "exercise":4,
+             "day":8,
+             "day_of_week":3,
+             "reps":"5",
+             "weights":"125"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 24,
+        "fields": {
+             "workout_program":1,
+             "exercise":0,
+             "day":9,
+             "day_of_week":5,
+             "reps":"5,5,5,5,5",
+             "weights":"85,85,85,85,85"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 25,
+        "fields": {
+             "workout_program":1,
+             "exercise":1,
+             "day":9,
+             "day_of_week":5,
+             "reps":"5,5,5,5,5",
+             "weights":"65,65,65,65,65"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 26,
+        "fields": {
+             "workout_program":1,
+             "exercise":2,
+             "day":9,
+             "day_of_week":5,
+             "reps":"5,5,5,5,5",
+             "weights":"65,65,65,65,65"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 27,
+        "fields": {
+             "workout_program":1,
+             "exercise":0,
+             "day":10,
+             "day_of_week":1,
+             "reps":"5,5,5,5,5",
+             "weights":"90,90,90,90,90"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 28,
+        "fields": {
+             "workout_program":1,
+             "exercise":3,
+             "day":10,
+             "day_of_week":1,
+             "reps":"5,5,5,5,5",
+             "weights":"65,65,65,65,65"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 29,
+        "fields": {
+             "workout_program":1,
+             "exercise":4,
+             "day":10,
+             "day_of_week":1,
+             "reps":"5",
+             "weights":"135"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 30,
+        "fields": {
+             "workout_program":1,
+             "exercise":0,
+             "day":11,
+             "day_of_week":3,
+             "reps":"5,5,5,5,5",
+             "weights":"95,95,95,95,95"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 31,
+        "fields": {
+             "workout_program":1,
+             "exercise":1,
+             "day":11,
+             "day_of_week":3,
+             "reps":"5,5,5,5,5",
+             "weights":"70,70,70,70,70"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 32,
+        "fields": {
+             "workout_program":1,
+             "exercise":2,
+             "day":11,
+             "day_of_week":3,
+             "reps":"5,5,5,5,5",
+             "weights":"70,70,70,70,70"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 33,
+        "fields": {
+             "workout_program":1,
+             "exercise":0,
+             "day":12,
+             "day_of_week":5,
+             "reps":"5,5,5,5,5",
+             "weights":"100,100,100,100,100"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 34,
+        "fields": {
+             "workout_program":1,
+             "exercise":3,
+             "day":12,
+             "day_of_week":5,
+             "reps":"5,5,5,5,5",
+             "weights":"70,70,70,70,70"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 35,
+        "fields": {
+             "workout_program":1,
+             "exercise":4,
+             "day":12,
+             "day_of_week":5,
+             "reps":"5",
+             "weights":"145"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 36,
+        "fields": {
+             "workout_program":1,
+             "exercise":0,
+             "day":13,
+             "day_of_week":1,
+             "reps":"5,5,5,5,5",
+             "weights":"105,105,105,105,105"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 37,
+        "fields": {
+             "workout_program":1,
+             "exercise":1,
+             "day":13,
+             "day_of_week":1,
+             "reps":"5,5,5,5,5",
+             "weights":"75,75,75,75,75"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 38,
+        "fields": {
+             "workout_program":1,
+             "exercise":2,
+             "day":13,
+             "day_of_week":1,
+             "reps":"5,5,5,5,5",
+             "weights":"75,75,75,75,75"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 39,
+        "fields": {
+             "workout_program":1,
+             "exercise":0,
+             "day":14,
+             "day_of_week":3,
+             "reps":"5,5,5,5,5",
+             "weights":"110,110,110,110,110"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 40,
+        "fields": {
+             "workout_program":1,
+             "exercise":3,
+             "day":14,
+             "day_of_week":3,
+             "reps":"5,5,5,5,5",
+             "weights":"75,75,75,75,75"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 41,
+        "fields": {
+             "workout_program":1,
+             "exercise":4,
+             "day":14,
+             "day_of_week":3,
+             "reps":"5",
+             "weights":"155"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 42,
+        "fields": {
+             "workout_program":1,
+             "exercise":0,
+             "day":15,
+             "day_of_week":5,
+             "reps":"5,5,5,5,5",
+             "weights":"115,115,115,115,115"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 43,
+        "fields": {
+             "workout_program":1,
+             "exercise":1,
+             "day":15,
+             "day_of_week":5,
+             "reps":"5,5,5,5,5",
+             "weights":"80,80,80,80,80"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 44,
+        "fields": {
+             "workout_program":1,
+             "exercise":2,
+             "day":15,
+             "day_of_week":5,
+             "reps":"5,5,5,5,5",
+             "weights":"80,80,80,80,80"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 45,
+        "fields": {
+             "workout_program":1,
+             "exercise":0,
+             "day":16,
+             "day_of_week":1,
+             "reps":"5,5,5,5,5",
+             "weights":"120,120,120,120,120"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 46,
+        "fields": {
+             "workout_program":1,
+             "exercise":3,
+             "day":16,
+             "day_of_week":1,
+             "reps":"5,5,5,5,5",
+             "weights":"80,80,80,80,80"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 47,
+        "fields": {
+             "workout_program":1,
+             "exercise":4,
+             "day":16,
+             "day_of_week":1,
+             "reps":"5",
+             "weights":"165"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 48,
+        "fields": {
+             "workout_program":1,
+             "exercise":0,
+             "day":17,
+             "day_of_week":3,
+             "reps":"5,5,5,5,5",
+             "weights":"125,125,125,125,125"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 49,
+        "fields": {
+             "workout_program":1,
+             "exercise":1,
+             "day":17,
+             "day_of_week":3,
+             "reps":"5,5,5,5,5",
+             "weights":"85,85,85,85,85"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 50,
+        "fields": {
+             "workout_program":1,
+             "exercise":2,
+             "day":17,
+             "day_of_week":3,
+             "reps":"5,5,5,5,5",
+             "weights":"85,85,85,85,85"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 51,
+        "fields": {
+             "workout_program":1,
+             "exercise":0,
+             "day":18,
+             "day_of_week":5,
+             "reps":"5,5,5,5,5",
+             "weights":"130,130,130,130,130"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 52,
+        "fields": {
+             "workout_program":1,
+             "exercise":3,
+             "day":18,
+             "day_of_week":5,
+             "reps":"5,5,5,5,5",
+             "weights":"85,85,85,85,85"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 53,
+        "fields": {
+             "workout_program":1,
+             "exercise":4,
+             "day":18,
+             "day_of_week":5,
+             "reps":"5",
+             "weights":"175"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 54,
+        "fields": {
+             "workout_program":1,
+             "exercise":0,
+             "day":19,
+             "day_of_week":1,
+             "reps":"5,5,5,5,5",
+             "weights":"135,135,135,135,135"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 55,
+        "fields": {
+             "workout_program":1,
+             "exercise":1,
+             "day":19,
+             "day_of_week":1,
+             "reps":"5,5,5,5,5",
+             "weights":"90,90,90,90,90"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 56,
+        "fields": {
+             "workout_program":1,
+             "exercise":2,
+             "day":19,
+             "day_of_week":1,
+             "reps":"5,5,5,5,5",
+             "weights":"90,90,90,90,90"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 57,
+        "fields": {
+             "workout_program":1,
+             "exercise":0,
+             "day":20,
+             "day_of_week":3,
+             "reps":"5,5,5,5,5",
+             "weights":"140,140,140,140,140"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 58,
+        "fields": {
+             "workout_program":1,
+             "exercise":3,
+             "day":20,
+             "day_of_week":3,
+             "reps":"5,5,5,5,5",
+             "weights":"90,90,90,90,90"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 59,
+        "fields": {
+             "workout_program":1,
+             "exercise":4,
+             "day":20,
+             "day_of_week":3,
+             "reps":"5",
+             "weights":"185"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 60,
+        "fields": {
+             "workout_program":1,
+             "exercise":0,
+             "day":21,
+             "day_of_week":5,
+             "reps":"5,5,5,5,5",
+             "weights":"145,145,145,145,145"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 61,
+        "fields": {
+             "workout_program":1,
+             "exercise":1,
+             "day":21,
+             "day_of_week":5,
+             "reps":"5,5,5,5,5",
+             "weights":"95,95,95,95,95"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 62,
+        "fields": {
+             "workout_program":1,
+             "exercise":2,
+             "day":21,
+             "day_of_week":5,
+             "reps":"5,5,5,5,5",
+             "weights":"95,95,95,95,95"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 63,
+        "fields": {
+             "workout_program":1,
+             "exercise":0,
+             "day":22,
+             "day_of_week":1,
+             "reps":"5,5,5,5,5",
+             "weights":"150,150,150,150,150"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 64,
+        "fields": {
+             "workout_program":1,
+             "exercise":3,
+             "day":22,
+             "day_of_week":1,
+             "reps":"5,5,5,5,5",
+             "weights":"95,95,95,95,95"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 65,
+        "fields": {
+             "workout_program":1,
+             "exercise":4,
+             "day":22,
+             "day_of_week":1,
+             "reps":"5",
+             "weights":"195"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 66,
+        "fields": {
+             "workout_program":1,
+             "exercise":0,
+             "day":23,
+             "day_of_week":3,
+             "reps":"5,5,5,5,5",
+             "weights":"155,155,155,155,155"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 67,
+        "fields": {
+             "workout_program":1,
+             "exercise":1,
+             "day":23,
+             "day_of_week":3,
+             "reps":"5,5,5,5,5",
+             "weights":"100,100,100,100,100"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 68,
+        "fields": {
+             "workout_program":1,
+             "exercise":2,
+             "day":23,
+             "day_of_week":3,
+             "reps":"5,5,5,5,5",
+             "weights":"100,100,100,100,100"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 69,
+        "fields": {
+             "workout_program":1,
+             "exercise":0,
+             "day":24,
+             "day_of_week":5,
+             "reps":"5,5,5,5,5",
+             "weights":"160,160,160,160,160"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 70,
+        "fields": {
+             "workout_program":1,
+             "exercise":3,
+             "day":24,
+             "day_of_week":5,
+             "reps":"5,5,5,5,5",
+             "weights":"100,100,100,100,100"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 71,
+        "fields": {
+             "workout_program":1,
+             "exercise":4,
+             "day":24,
+             "day_of_week":5,
+             "reps":"5",
+             "weights":"205"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 72,
+        "fields": {
+             "workout_program":1,
+             "exercise":0,
+             "day":25,
+             "day_of_week":1,
+             "reps":"5,5,5,5,5",
+             "weights":"165,165,165,165,165"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 73,
+        "fields": {
+             "workout_program":1,
+             "exercise":1,
+             "day":25,
+             "day_of_week":1,
+             "reps":"5,5,5,5,5",
+             "weights":"105,105,105,105,105"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 74,
+        "fields": {
+             "workout_program":1,
+             "exercise":2,
+             "day":25,
+             "day_of_week":1,
+             "reps":"5,5,5,5,5",
+             "weights":"105,105,105,105,105"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 75,
+        "fields": {
+             "workout_program":1,
+             "exercise":0,
+             "day":26,
+             "day_of_week":3,
+             "reps":"5,5,5,5,5",
+             "weights":"170,170,170,170,170"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 76,
+        "fields": {
+             "workout_program":1,
+             "exercise":3,
+             "day":26,
+             "day_of_week":3,
+             "reps":"5,5,5,5,5",
+             "weights":"105,105,105,105,105"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 77,
+        "fields": {
+             "workout_program":1,
+             "exercise":4,
+             "day":26,
+             "day_of_week":3,
+             "reps":"5",
+             "weights":"215"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 78,
+        "fields": {
+             "workout_program":1,
+             "exercise":0,
+             "day":27,
+             "day_of_week":5,
+             "reps":"5,5,5,5,5",
+             "weights":"175,175,175,175,175"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 79,
+        "fields": {
+             "workout_program":1,
+             "exercise":1,
+             "day":27,
+             "day_of_week":5,
+             "reps":"5,5,5,5,5",
+             "weights":"110,110,110,110,110"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 80,
+        "fields": {
+             "workout_program":1,
+             "exercise":2,
+             "day":27,
+             "day_of_week":5,
+             "reps":"5,5,5,5,5",
+             "weights":"110,110,110,110,110"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 81,
+        "fields": {
+             "workout_program":1,
+             "exercise":0,
+             "day":28,
+             "day_of_week":1,
+             "reps":"5,5,5,5,5",
+             "weights":"180,180,180,180,180"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 82,
+        "fields": {
+             "workout_program":1,
+             "exercise":3,
+             "day":28,
+             "day_of_week":1,
+             "reps":"5,5,5,5,5",
+             "weights":"110,110,110,110,110"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 83,
+        "fields": {
+             "workout_program":1,
+             "exercise":4,
+             "day":28,
+             "day_of_week":1,
+             "reps":"5",
+             "weights":"225"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 84,
+        "fields": {
+             "workout_program":1,
+             "exercise":0,
+             "day":29,
+             "day_of_week":3,
+             "reps":"5,5,5,5,5",
+             "weights":"185,185,185,185,185"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 85,
+        "fields": {
+             "workout_program":1,
+             "exercise":1,
+             "day":29,
+             "day_of_week":3,
+             "reps":"5,5,5,5,5",
+             "weights":"115,115,115,115,115"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 86,
+        "fields": {
+             "workout_program":1,
+             "exercise":2,
+             "day":29,
+             "day_of_week":3,
+             "reps":"5,5,5,5,5",
+             "weights":"115,115,115,115,115"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 87,
+        "fields": {
+             "workout_program":1,
+             "exercise":0,
+             "day":30,
+             "day_of_week":5,
+             "reps":"5,5,5,5,5",
+             "weights":"190,190,190,190,190"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 88,
+        "fields": {
+             "workout_program":1,
+             "exercise":3,
+             "day":30,
+             "day_of_week":5,
+             "reps":"5,5,5,5,5",
+             "weights":"115,115,115,115,115"
+         }
+    },
+    {
+        "model":"db_models.workoutday",
+        "pk": 89,
+        "fields": {
+             "workout_program":1,
+             "exercise":4,
+             "day":30,
+             "day_of_week":5,
+             "reps":"5",
+             "weights":"235"
+         }
+    }
+]

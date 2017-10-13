@@ -38,9 +38,14 @@ python manage.py migrate
 if (($NO_DB)); then
   COMMAND="
 from django.contrib.auth.models import User
+from db_models.models.profile import Profile
 
 user = User.objects.create_superuser('admin@gymapp.life', 'admin@gymapp.life', 'password')
+Profile.objects.create(id=123, goal='CARDIO', experience='NEW', weight=75, height=182)
 "
   echo "$COMMAND"
   echo "$COMMAND" | python manage.py shell
+  python manage.py loaddata db_models/fixtures/exercise.json
+  python manage.py loaddata db_models/fixtures/day_of_week.json
+  python manage.py loaddata db_models/fixtures/stronglifts_5x5.json
 fi

@@ -2,6 +2,11 @@ from django.db import models
 from utils.namedtuple import namedtuple_and_choices_from_kwargs
 
 
+class SelectWorkoutProgramException(ValueError):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
 class Profile(models.Model):
 
     Goal, _goal_choices = namedtuple_and_choices_from_kwargs(
@@ -14,9 +19,10 @@ class Profile(models.Model):
     Experience, _experience_choices = namedtuple_and_choices_from_kwargs(
         'Experience',
         NEW='New',
-        LT_ONE='Less than 1 year',
-        ONE_TO_THREE='1 to 3 years',
-        GT_THREE='More than 3 years',
+        BEGINNER='Beginner',
+        NOVICE='Novice',
+        INTERMEDIATE='Intermediate',
+        ADVANCED='Advanced',
     )
 
     # This is their Facebook user id
@@ -37,3 +43,33 @@ class Profile(models.Model):
 
     # Height in cm
     height = models.PositiveSmallIntegerField()
+
+    current_workout_program = models.ForeignKey(
+        'WorkoutProgram',
+        on_delete=models.SET_NULL,
+        null=True,
+        default=None,
+        related_name='current_workout_program',
+    )
+
+    current_custom_workout_program = models.ForeignKey(
+        'CustomWorkoutProgram',
+        on_delete=models.SET_NULL,
+        null=True,
+        default=None,
+        related_name='current_custom_workout_program',
+    )
+
+    def __str__(self):
+        return str(self.id)
+
+    def save(self, *args, **kwargs):
+        if (
+            self.current_workout_program
+            and self.current_custom_workout_program
+        ):
+            raise SelectWorkoutProgramException(
+                'Only one of current_workout_program and '
+                + 'current_custom_workout_program may be populated.',
+            )
+        super().save(*args, **kwargs)

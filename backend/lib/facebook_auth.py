@@ -3,11 +3,11 @@ import facebook
 from backend.settings import FB_APP_ID
 from backend.settings import FB_GRAPH_VERSION
 
-# TODO: Update scopes to include email, etc.
+
 SCOPES = {'user_friends', 'public_profile'}
 
 
-def fb_auth_error(uid, token):
+def facebook_auth_error(uid, token):
     uid = str(uid)
     graph = facebook.GraphAPI(access_token=token, version=FB_GRAPH_VERSION)
 

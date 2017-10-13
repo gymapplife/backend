@@ -1,0 +1,402 @@
+[
+    {
+        "model":"db_models.exercise",
+        "pk":0,
+        "fields":{
+            "name":"Squat",
+            "primary_muscle":"Legs"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":1,
+        "fields":{
+            "name":"Bench Press",
+            "primary_muscle":"Chest"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":2,
+        "fields":{
+            "name":"Overhead Press",
+            "primary_muscle":"Shoulders"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":3,
+        "fields":{
+            "name":"Barbell Row",
+            "primary_muscle":"Back"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":4,
+        "fields":{
+            "name":"Deadlift",
+            "primary_muscle":"Back"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":5,
+        "fields":{
+            "name":"Dumbbell Bench Press",
+            "primary_muscle":"Chest"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":6,
+        "fields":{
+            "name":"Incline Dumbbell Press",
+            "primary_muscle":"Chest"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":7,
+        "fields":{
+            "name":"Decline Dumbbell Press",
+            "primary_muscle":"Chest"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":8,
+        "fields":{
+            "name":"Incline Barbell Bench Press",
+            "primary_muscle":"Chest"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":9,
+        "fields":{
+            "name":"Decline Barbell Bench Press",
+            "primary_muscle":"Chest"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":10,
+        "fields":{
+            "name":"Dumbbell Flyes",
+            "primary_muscle":"Chest"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":11,
+        "fields":{
+            "name":"Incline Dumbbell Flyes",
+            "primary_muscle":"Chest"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":12,
+        "fields":{
+            "name":"Decline Dumbbell Flyes",
+            "primary_muscle":"Chest"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":13,
+        "fields":{
+            "name":"Dips",
+            "primary_muscle":"Chest"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":14,
+        "fields":{
+            "name":"Pushups",
+            "primary_muscle":"Chest"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":15,
+        "fields":{
+            "name":"Farmer's Walk",
+            "primary_muscle":"Arms"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":16,
+        "fields":{
+            "name":"Pullups",
+            "primary_muscle":"Lats"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":17,
+        "fields":{
+            "name":"Chinups",
+            "primary_muscle":"Lats"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":18,
+        "fields":{
+            "name":"Lat Pulldown",
+            "primary_muscle":"Lats"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":19,
+        "fields":{
+            "name":"One-Arm Dumbbell Row",
+            "primary_muscle":"Back"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":20,
+        "fields":{
+            "name":"T-Bar Row",
+            "primary_muscle":"Back"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":21,
+        "fields":{
+            "name":"Seated Cable Row",
+            "primary_muscle":"Back"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":22,
+        "fields":{
+            "name":"Pendlay Row",
+            "primary_muscle":"Back"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":23,
+        "fields":{
+            "name":"Sumo Deadlift",
+            "primary_muscle":"Back"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":24,
+        "fields":{
+            "name":"Rack Pull",
+            "primary_muscle":"Back"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":25,
+        "fields":{
+            "name":"Barbell Front Squat",
+            "primary_muscle":"Legs"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":26,
+        "fields":{
+            "name":"Goblet Squat",
+            "primary_muscle":"Legs"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":27,
+        "fields":{
+            "name":"Leg Press",
+            "primary_muscle":"Legs"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":28,
+        "fields":{
+            "name":"Barbell Lunge",
+            "primary_muscle":"Legs"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":29,
+        "fields":{
+            "name":"Leg Extensions",
+            "primary_muscle":"Legs"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":30,
+        "fields":{
+            "name":"Romanian Deadlift",
+            "primary_muscle":"Legs"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":31,
+        "fields":{
+            "name":"Stiff-Legged Deadlift",
+            "primary_muscle":"Legs"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":32,
+        "fields":{
+            "name":"Calf Raise",
+            "primary_muscle":"Legs"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":33,
+        "fields":{
+            "name":"Triceps Extension",
+            "primary_muscle":"Triceps"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":34,
+        "fields":{
+            "name":"Triceps Pushdown",
+            "primary_muscle":"Triceps"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":35,
+        "fields":{
+            "name":"Skullcrusher",
+            "primary_muscle":"Triceps"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":36,
+        "fields":{
+            "name":"Dumbbell Shrug",
+            "primary_muscle":"Traps"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":37,
+        "fields":{
+            "name":"Barbell Shrug",
+            "primary_muscle":"Traps"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":38,
+        "fields":{
+            "name":"Push Press",
+            "primary_muscle":"Shoulders"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":39,
+        "fields":{
+            "name":"Side Lateral Dumbbell Raise",
+            "primary_muscle":"Shoulders"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":40,
+        "fields":{
+            "name":"Dumbbell Shoulder Press",
+            "primary_muscle":"Shoulders"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":41,
+        "fields":{
+            "name":"Reverse Flyes",
+            "primary_muscle":"Shoulders"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":42,
+        "fields":{
+            "name":"Front Dumbbell Raise",
+            "primary_muscle":"Shoulders"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":43,
+        "fields":{
+            "name":"Plate Twist",
+            "primary_muscle":"Abs"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":44,
+        "fields":{
+            "name":"Barbell Hip Thrust",
+            "primary_muscle":"Legs"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":45,
+        "fields":{
+            "name":"Hammer Curl",
+            "primary_muscle":"Arms"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":46,
+        "fields":{
+            "name":"Incline Hammer Curl",
+            "primary_muscle":"Arms"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":47,
+        "fields":{
+            "name":"Dumbbell Curl",
+            "primary_muscle":"Arms"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":48,
+        "fields":{
+            "name":"Incline Dumbbell Curl",
+            "primary_muscle":"Arms"
+        }
+    },
+    {
+        "model":"db_models.exercise",
+        "pk":49,
+        "fields":{
+            "name":"Barbell Curl",
+            "primary_muscle":"Arms"
+        }
+    }
+]

@@ -18,24 +18,33 @@ For example:
 
 ### Prerequisites
 
-These instructions are for Ubuntu -- use `sudo` as needed.
+These instructions are for Ubuntu.
 
 1. `python3.6`
 ```bash
-add-apt-repository ppa:jonathonf/python-3.6
-apt update
-apt install python3.6
+sudo add-apt-repository ppa:jonathonf/python-3.6
+sudo apt update
+sudo apt install python3.6
 wget https://bootstrap.pypa.io/get-pip.py
-python3.6 get-pip.py
+sudo python3.6 get-pip.py
 rm get-pip.py
 ```
 2. `virtualenv`
 ```bash
-pip3.6 install virtualenv
+sudo pip3.6 install virtualenv
 ```
 3. `make`
 ```bash
-apt install make
+sudo apt install make
+```
+
+4. `graphviz` (optional, for visualizing DB tables)
+```bash
+wget http://graphviz.org/pub/graphviz/stable/ubuntu/ub13.10/x86_64/graphviz_2.38.0-1~saucy_amd64.deb
+wget http://graphviz.org/pub/graphviz/stable/ubuntu/ub13.10/x86_64/graphviz-dev_2.38.0-1~saucy_all.deb
+sudo dpkg -i graphviz_2.38.0-1~saucy_amd64.deb graphviz-dev_2.38.0-1~saucy_all.deb
+sudo apt install -f
+rm graphviz_2.38.0-1~saucy_amd64.deb graphviz-dev_2.38.0-1~saucy_all.deb
 ```
 
 ### Environment Variables
@@ -85,6 +94,10 @@ You **must** activate the venv every time you want to do stuff with `python` or 
 1. `make test`
 
 If you add new functionality, please create new tests accordingly.
+
+### Visualizing DB tables
+
+`python manage.py graph_models -g -o ~/db_tables.png db_models`
 
 ## Authors
 
