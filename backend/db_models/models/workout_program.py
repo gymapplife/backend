@@ -1,10 +1,8 @@
-from django.db import models
+from db_models.models.base.abstract_workout_program import (
+    AbstractWorkoutProgram
+)
 
 
-class WorkoutProgram(models.Model):
+class WorkoutProgram(AbstractWorkoutProgram):
 
-    name = models.CharField(max_length=64)
-    length = models.PositiveSmallIntegerField()
-
-    def __str__(self):
-        return f'{self.name} ({self.length} days)'
+    pass

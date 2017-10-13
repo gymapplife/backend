@@ -11,10 +11,11 @@ class ProfileMixin:
         """
         try:
             request.profile = Profile.objects.get(id=request.fb_id)
-            return super().dispatch(
-                request,
-                *args,
-                **kwargs,
-            )
         except:
             return NoProfileForbiddenResponse()
+
+        return super().dispatch(
+            request,
+            *args,
+            **kwargs,
+        )
