@@ -26,9 +26,12 @@ class FacebookAuthMixin:
             auth = request.META['HTTP_AUTHORIZATION'].split()
 
             if len(auth) == 2 and auth[0].lower() == 'basic':
-                fb_id, fb_token = base64.b64decode(
-                    auth[1],
-                ).decode('utf-8').split(':')
+                try:
+                    fb_id, fb_token = base64.b64decode(
+                        auth[1],
+                    ).decode('utf-8').split(':')
+                except:
+                    return HttpResponseUnauthorized()
 
                 auth_error = facebook_auth_error(fb_id, fb_token)
 
