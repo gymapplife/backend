@@ -48,4 +48,5 @@ Profile.objects.create(id=123, goal='CARDIO', experience='NEW', weight=75, heigh
   python manage.py loaddata db_models/fixtures/exercise.json
   python manage.py loaddata db_models/fixtures/day_of_week.json
   python manage.py loaddata db_models/fixtures/stronglifts_5x5.json
+  python manage.py loaddata db_models/fixtures/531_beginner.json
 fi
