@@ -2,7 +2,9 @@ from db_models.models.custom_workout_day import CustomWorkoutDay
 from db_models.models.custom_workout_program import CustomWorkoutProgram
 from db_models.models.day_of_week import DayOfWeek
 from db_models.models.exercise import Exercise
+from db_models.models.photo import Photo
 from db_models.models.profile import Profile
+from db_models.models.video import Video
 from db_models.models.workout_day import WorkoutDay
 from db_models.models.workout_program import WorkoutProgram
 from django.contrib import admin
@@ -69,4 +71,24 @@ class CustomWorkoutDayAdmin(admin.ModelAdmin):
         'sets',
         'reps',
         'weights',
+    )
+
+
+@admin.register(Photo)
+class PhotoAdmin(admin.ModelAdmin):
+
+    list_display = (
+        'title',
+        'exercise',
+        'profile',
+    )
+
+
+@admin.register(Video)
+class VideoAdmin(admin.ModelAdmin):
+
+    list_display = (
+        'title',
+        'exercise',
+        'profile',
     )

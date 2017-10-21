@@ -1,6 +1,8 @@
 *.py[co]
 db.sqlite3
 
+backend/uploads/
+
 # THIS IS TEMPORARY UNTIL WE SHARE A DATABASE
 backend/db_models/migrations/
 

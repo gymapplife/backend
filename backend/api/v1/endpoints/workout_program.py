@@ -58,11 +58,11 @@ class WorkoutProgramsView(ProfileAuthedAPIView):
 
         No query parameters will return nothing.
 
-        `?default=1` will return all default programs.
+        `?default` will return all default programs.
 
-        `?custom=1` will return all custom programs available to the user.
+        `?custom` will return all custom programs available to the user.
 
-        `?default=1&custom=1` will return both types.
+        `?default&custom` will return both types.
 
 
         #### Sample Response
@@ -87,13 +87,13 @@ class WorkoutProgramsView(ProfileAuthedAPIView):
         """
         response_dict = {}
 
-        if request.query_params.get('default') == '1':
+        if 'default' in request.query_params:
             response_dict['default'] = WorkoutProgramSerializer(
                 WorkoutProgram.objects.all(),
                 many=True,
             ).data
 
-        if request.query_params.get('custom') == '1':
+        if 'custom' in request.query_params:
             response_dict['custom'] = WorkoutProgramSerializer(
                 request.profile.customworkoutprogram_set.all(),
                 many=True,
@@ -228,14 +228,14 @@ class WorkoutProgramView(ProfileAuthedAPIView):
         """Get a specific workout program's details
 
         #### Query Parameters
-        * default: 1 (or custom)
-        * custom: 1 (or default)
+        * default (or custom)
+        * custom (or default)
 
         No query parameters will return 400.
 
-        `?default=1` will return a default program of given id.
+        `?default` will return a default program of given id.
 
-        `?custom=1` will return a custom program of given id, if
+        `?custom` will return a custom program of given id, if
         available to the user; 404 otherwise.
 
         `default` takes precedence over `custom`.
@@ -274,10 +274,10 @@ class WorkoutProgramView(ProfileAuthedAPIView):
         }
         ```
         """
-        if request.query_params.get('default') == '1':
+        if 'default' in request.query_params:
             program = get_object_or_404(WorkoutProgram, pk=pk)
             days = program.workoutday_set.all()
-        elif request.query_params.get('custom') == '1':
+        elif 'custom' in request.query_params:
             program = get_object_or_404(CustomWorkoutProgram, pk=pk)
             if program.profile != request.profile:
                 raise Http404()
