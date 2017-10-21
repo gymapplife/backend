@@ -65,6 +65,41 @@ class MediasView(ProfileAuthedAPIView):
 
     def get(self, request):
         """Get S3 urls to download media from
+
+        #### Query Parameters
+        * photo: 1 (optional)
+        * video: 1 (optional)
+
+        No query parameters will return nothing.
+
+        `?photo` will return all photos available to the user.
+
+        `?video` will return all videos available to the user.
+
+        `?photo&video` will return both types.
+
+
+        #### Sample Response
+        ```
+        {
+            "photo": [
+                {
+                    "id": 2,
+                    "exercise": 1,
+                    "title": "swag",
+                    "s3_url": "MOCK_S3_DOWNLOAD_URL"
+                }
+            ],
+            "video": [
+                {
+                    "id": 4,
+                    "exercise": 1,
+                    "title": "swag",
+                    "s3_url": "MOCK_S3_DOWNLOAD_URL"
+                }
+            ]
+        }
+        ```
         """
         response_dict = {}
 
@@ -74,6 +109,7 @@ class MediasView(ProfileAuthedAPIView):
                 many=True,
             ).data
             for data in datas:
+                # TODO: Delete model from DB if S3 doesn't exist
                 data['s3_url'] = s3.get_download_url(data['s3_url'])
             response_dict['photo'] = datas
 
@@ -90,6 +126,20 @@ class MediasView(ProfileAuthedAPIView):
 
     def post(self, request):
         """Get an S3 url to upload media to
+
+        #### Body Parameters
+        * title: string
+        * exercise: integer
+
+        #### Sample Response
+        ```
+        {
+            "id": 5,
+            "exercise": 1,
+            "title": "swag",
+            "s3_url": "MOCK_S3_UPLOAD_URL"
+        }
+        ```
         """
         if 'photo' in request.query_params:
             CreateSerializer = CreatePhotoSerializer
@@ -117,6 +167,7 @@ class MediasView(ProfileAuthedAPIView):
             serializer.save()
             data = dict(serializer.data)
             data['s3_url'] = s3_upload_url
+            data.pop('profile', None)
             return Response(data, status=status.HTTP_201_CREATED)
 
         errors = dict(serializer.errors)
@@ -129,6 +180,10 @@ class MediaView(ProfileAuthedAPIView):
 
     def delete(self, request, pk):
         """Delete media
+
+        #### Query Parameters
+        * photo (or video)
+        * video (or photo)
         """
         if 'photo' in request.query_params:
             media = get_object_or_404(Photo, pk=pk)
