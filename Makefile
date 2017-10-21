@@ -6,3 +6,6 @@ start-dev:
 
 clean:
 	./scripts/clean.sh
+
+shell:
+	./scripts/shell.sh

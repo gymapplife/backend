@@ -17,4 +17,4 @@ source "$ROOT_PATH/venv/bin/activate"
 
 cd "$ROOT_PATH/backend"
 
-python manage.py runserver_plus
+python manage.py shell_plus
