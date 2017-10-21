@@ -85,7 +85,7 @@ class ProfileView(AuthedAPIView):
         try:
             Profile.objects.get(pk=request.fb_id)
             return Response(
-                {'id': f'"{request.fb_id}" already in use.'},
+                {'id': f'Facebook ID "{request.fb_id}" already in use.'},
                 status=status.HTTP_400_BAD_REQUEST,
             )
         except Profile.DoesNotExist:
@@ -150,10 +150,10 @@ class ProfileView(AuthedAPIView):
         except Profile.DoesNotExist:
             return NoProfileForbiddenResponse()
 
-        if request.data and 'current_custom_workout_program' in request.data:
-            pk = request.data['current_custom_workout_program']
+        if request.data:
+            pk = request.data.get('current_custom_workout_program')
             try:
-                if CustomWorkoutProgram.objects.get(
+                if pk and CustomWorkoutProgram.objects.get(
                     pk=pk,
                 ).profile != profile:
                     raise NotYourProgramException()
