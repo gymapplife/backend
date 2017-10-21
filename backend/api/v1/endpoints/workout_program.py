@@ -2,6 +2,8 @@ import simplejson as json
 from api.v1.endpoints.workout_day import CustomWorkoutDaySerializer
 from api.v1.endpoints.workout_day import WorkoutDaySerializer
 from api.views import ProfileAuthedAPIView
+from db_models.models.custom_workout_day import CustomWorkoutDay
+from db_models.models.custom_workout_day import CustomWorkoutDayException
 from db_models.models.custom_workout_program import CustomWorkoutProgram
 from db_models.models.workout_program import WorkoutProgram
 from django.db import transaction
@@ -10,14 +12,6 @@ from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from rest_framework import status
 from rest_framework.response import Response
-
-
-class StrintException(Exception):
-    pass
-
-
-class SerializerException(Exception):
-    pass
 
 
 class WorkoutProgramSerializer(serializers.ModelSerializer):
@@ -29,6 +23,28 @@ class WorkoutProgramSerializer(serializers.ModelSerializer):
             'name',
             'length',
         )
+
+
+def _process_days_string(program, days_string):
+    try:
+        days = json.loads(days_string)
+    except json.scanner.JSONDecodeError:
+        raise CustomWorkoutDayException('Invalid JSON.')
+    for day, exercises in days.items():
+        try:
+            day = int(day)
+        except ValueError:
+            raise CustomWorkoutDayException(f'"{day}" is not an integer.')
+        for exercise in exercises:
+            exercise['workout_program'] = program.pk
+            exercise['day'] = day
+
+    # https://stackoverflow.com/questions/952914/making-a-flat-list-out-of-list-of-lists-in-python
+    return [
+        item for sublist in list(
+            days.values(),
+        ) for item in sublist
+    ]
 
 
 class WorkoutProgramsView(ProfileAuthedAPIView):
@@ -154,7 +170,6 @@ class WorkoutProgramsView(ProfileAuthedAPIView):
         except CustomWorkoutProgram.DoesNotExist:
             pass
 
-        errors = {}
         try:
             with transaction.atomic():
                 program = CustomWorkoutProgram.objects.create(
@@ -162,29 +177,9 @@ class WorkoutProgramsView(ProfileAuthedAPIView):
                     name=request.data['name'],
                     length=0,
                 )
-                days = request.data.get('days')
-                if days:
-                    try:
-                        days = json.loads(days)
-                    except json.scanner.JSONDecodeError:
-                        errors['days'] = 'Invalid JSON.'
-                        raise
-                    for day, exercises in days.items():
-                        try:
-                            day = int(day)
-                        except ValueError:
-                            errors['days'] = f'"{day}" is not an integer.'
-                            raise StrintException()
-                        for exercise in exercises:
-                            exercise['workout_program'] = program.pk
-                            exercise['day'] = day
-
-                    # https://stackoverflow.com/questions/952914/making-a-flat-list-out-of-list-of-lists-in-python
-                    days = [
-                        item for sublist in list(
-                            days.values(),
-                        ) for item in sublist
-                    ]
+                days_string = request.data.get('days')
+                if days_string:
+                    days = _process_days_string(program, days_string)
 
                     serializer = CustomWorkoutDaySerializer(
                         data=days,
@@ -194,17 +189,13 @@ class WorkoutProgramsView(ProfileAuthedAPIView):
                     if serializer.is_valid():
                         serializer.save()
                         program.length = len(days)
-                        program.full_clean()
                         program.save()
                     else:
-                        errors['days'] = serializer.errors
-                        raise SerializerException()
-        except (
-            json.scanner.JSONDecodeError,
-            StrintException,
-            SerializerException,
-        ):
-            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+                        raise CustomWorkoutDayException(serializer.errors)
+        except CustomWorkoutDayException as e:
+            return Response(
+                {'days': e.errors}, status=status.HTTP_400_BAD_REQUEST,
+            )
 
         return Response(
             WorkoutProgramView.get_workout_program(
@@ -305,3 +296,138 @@ class WorkoutProgramView(ProfileAuthedAPIView):
                 days,
             ),
         )
+
+    def patch(self, request, pk):
+        """Update a custom workout program
+
+        #### Body Parameters
+        * name: string (optional)
+        * days: json string (optional)
+
+        ##### Days format
+
+        ```
+        {
+            "1":[
+                {
+                    "exercise":0,
+                    "day_of_week":1,
+                    "reps":"5,5,5,5,5",
+                    "weights":"45,45,45,45,45"
+                },
+                {
+                    "exercise":3,
+                    "delete":true
+                },
+                ...
+            ],
+            ...
+        }
+        ```
+
+        Delete a day's exercise with `"delete":true`
+
+        #### Sample Response
+        ```
+        {
+            "program": {
+                "id": 11,
+                "name": "Super",
+                "length": 10
+            },
+            "days": {
+                "1": [
+                    {
+                        "exercise": 0,
+                        "day_of_week": 1,
+                        "sets": 5,
+                        "reps": "5,5,5,5,5",
+                        "weights": "45,45,45,45,45"
+                    },
+                    ...
+                ],
+                ...
+            }
+        }
+        ```
+        """
+        program = get_object_or_404(CustomWorkoutProgram, pk=pk)
+        if program.profile != request.profile:
+            raise Http404()
+
+        if request.data:
+            name = request.data.get('name')
+            if name is not None and name != program.name:
+                if not (name and isinstance(name, str)):
+                    return Response(
+                        {'name': 'Must be a non-empty string.'},
+                        status=status.HTTP_400_BAD_REQUEST,
+                    )
+                try:
+                    CustomWorkoutProgram.objects.get(
+                        profile=request.profile,
+                        name=request.data['name'],
+                    )
+                    return Response(
+                        {'name': 'Name already in use.'},
+                        status=status.HTTP_400_BAD_REQUEST,
+                    )
+                except CustomWorkoutProgram.DoesNotExist:
+                    pass
+                program.name = name
+                program.save()
+
+            days_string = request.data.get('days')
+            if days_string:
+                try:
+                    days = _process_days_string(program, days_string)
+                    with transaction.atomic():
+                        for day_data in days:
+                            try:
+                                # TODO: Slow.
+                                day_set = program.customworkoutday_set
+                                existing_day = day_set.get(
+                                    day=day_data['day'],
+                                    exercise=day_data['exercise'],
+                                )
+                            except CustomWorkoutDay.DoesNotExist:
+                                existing_day = None
+
+                            if day_data.get('delete') is True:
+                                if existing_day:
+                                    existing_day.delete()
+                                    continue
+                            else:
+                                serializer = CustomWorkoutDaySerializer(
+                                    existing_day,
+                                    data=day_data,
+                                )
+
+                                if serializer.is_valid():
+                                    serializer.save()
+                                else:
+                                    raise CustomWorkoutDayException(
+                                        serializer.errors,
+                                    )
+                except CustomWorkoutDayException as e:
+                    return Response(
+                        {'days': e.errors}, status=status.HTTP_400_BAD_REQUEST,
+                    )
+
+        return Response(
+            WorkoutProgramView.get_workout_program(
+                program,
+                program.customworkoutday_set.all(),
+            ),
+        )
+
+    def delete(self, request, pk):
+        """Delete a custom workout program
+        """
+        program = get_object_or_404(CustomWorkoutProgram, pk=pk)
+        if program.profile != request.profile:
+            raise Http404()
+
+        program.delete()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)
