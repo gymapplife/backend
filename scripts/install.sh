@@ -41,7 +41,9 @@ from django.contrib.auth.models import User
 from db_models.models.profile import Profile
 
 user = User.objects.create_superuser('admin@gymapp.life', 'admin@gymapp.life', 'password')
-Profile.objects.create(id=123, goal='CARDIO', experience='NEW', weight=75, height=182)
+
+Profile.objects.create(pk=1, goal='CARDIO', experience='NEW', weight=75, height=182)
+Profile.objects.create(pk=2, goal='STRENGTH_TRAINING', experience='BEGINNER', weight=40, height=120)
 "
   echo "$COMMAND"
   echo "$COMMAND" | python manage.py shell

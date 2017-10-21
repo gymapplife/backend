@@ -10,8 +10,8 @@ class ProfileMixin:
         request.fb_id must be avaliable
         """
         try:
-            request.profile = Profile.objects.get(id=request.fb_id)
-        except:
+            request.profile = Profile.objects.get(pk=request.fb_id)
+        except Profile.DoesNotExist:
             return NoProfileForbiddenResponse()
 
         return super().dispatch(

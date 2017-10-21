@@ -148,7 +148,7 @@ class WorkoutProgramView(ProfileAuthedAPIView):
             days = program.workoutday_set.all()
         elif request.query_params.get('custom') == '1':
             program = get_object_or_404(CustomWorkoutProgram, pk=pk)
-            if not program.profile.id == request.profile.id:
+            if program.profile != request.profile:
                 raise Http404()
             days = program.customworkoutday_set.all()
         else:
@@ -173,3 +173,6 @@ class WorkoutProgramView(ProfileAuthedAPIView):
             'program': WorkoutProgramSerializer(program).data,
             'days': days_dict,
         })
+
+    def post(self, request):
+        pass
