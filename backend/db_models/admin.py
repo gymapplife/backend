@@ -33,7 +33,7 @@ class ProfileAdmin(admin.ModelAdmin):
 @admin.register(Exercise)
 class ExerciseAdmin(admin.ModelAdmin):
 
-    list_display = ('name', 'primary_muscle')
+    list_display = ('name', 'primary_muscle', 'photo', 'video')
 
 
 @admin.register(WorkoutProgram)
@@ -79,22 +79,22 @@ class CustomWorkoutDayAdmin(admin.ModelAdmin):
 @admin.register(PublicPhoto)
 class PublicPhotoAdmin(admin.ModelAdmin):
 
-    list_display = ('name',)
+    list_display = ('name', 'download_url')
 
 
 @admin.register(PublicVideo)
 class PublicVideoAdmin(admin.ModelAdmin):
 
-    list_display = ('name',)
+    list_display = ('name', 'download_url')
 
 
 @admin.register(UploadedPhoto)
 class UploadedPhotoAdmin(admin.ModelAdmin):
 
-    list_display = ('name',)
+    list_display = ('name', 'download_url')
 
 
 @admin.register(UploadedVideo)
 class UploadedVideoAdmin(admin.ModelAdmin):
 
-    list_display = ('name',)
+    list_display = ('name', 'download_url')

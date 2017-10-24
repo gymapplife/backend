@@ -21,10 +21,10 @@ class _AbstractS3(metaclass=abc.ABCMeta):
 class _MockS3(_AbstractS3):
 
     def get_upload_url(self, bucket, key):
-        return f'upload {bucket} {key}'
+        return f'upload | {bucket} | {key}'
 
     def get_download_url(self, bucket, key):
-        return f'download {bucket} {key}'
+        return f'download | {bucket} | {key}'
 
     def delete(self, bucket, key):
         pass
@@ -39,6 +39,8 @@ class _S3(_AbstractS3):
         pass
 
     def get_download_url(self, bucket, key):
+        """Please return None if does not exist.
+        """
         pass
 
     def delete(self, bucket, key):

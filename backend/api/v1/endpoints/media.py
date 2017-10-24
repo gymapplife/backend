@@ -1,64 +1,53 @@
 from api.views import ProfileAuthedAPIView
-from db_models.models.photo import Photo
-from db_models.models.video import Video
-from django.http import Http404
-from django.shortcuts import get_object_or_404
-from lib import s3
+from db_models.models.public_photo import PublicPhoto
+from db_models.models.public_video import PublicVideo
+from db_models.models.uploaded_photo import UploadedPhoto
+from db_models.models.uploaded_video import UploadedVideo
 from rest_framework import serializers
 from rest_framework import status
 from rest_framework.response import Response
+from utils.models import get_model_for_profile
+from utils.query import get_query_switches
 
 
-class CreatePhotoSerializer(serializers.ModelSerializer):
+class DownloadMediaSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Photo
+        # Quite a bit of a hack. Cannot put abstract models here.
+        # Since these fields are shared, just use PublicPhoto /shrug
+        model = PublicPhoto
         fields = (
             'id',
+            'name',
+            'download_url',
+        )
+        read_only_fields = ('download_url',)
+
+
+class UploadedPhotoSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UploadedPhoto
+        fields = (
+            'id',
+            'name',
             'profile',
-            'exercise',
-            'title',
-            's3_url',
+            'upload_url',
         )
+        read_only_fields = ('upload_url',)
 
 
-class PhotoSerializer(serializers.ModelSerializer):
+class UploadedVideoSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Photo
+        model = UploadedVideo
         fields = (
             'id',
-            'exercise',
-            'title',
-            's3_url',
-        )
-        read_only_fields = ('s3_url',)
-
-
-class CreateVideoSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Video
-        fields = (
-            'id',
+            'name',
             'profile',
-            'exercise',
-            'title',
-            's3_url',
+            'upload_url',
         )
-
-
-class VideoSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Video
-        fields = (
-            'id',
-            'exercise',
-            'title',
-            's3_url',
-        )
-        read_only_fields = ('s3_url',)
+        read_only_fields = ('upload_url',)
 
 
 class MediasView(ProfileAuthedAPIView):
@@ -67,60 +56,80 @@ class MediasView(ProfileAuthedAPIView):
         """Get S3 urls to download media from
 
         #### Query Parameters
-        * photo: 1 (optional)
-        * video: 1 (optional)
+        * public_photo (optional)
+        * public_video (optional)
+        * uploaded_photo (optional)
+        * uploaded_video (optional)
 
-        No query parameters will return nothing.
+        `?public_photo` will return all public photos.
 
-        `?photo` will return all photos available to the user.
+        `?public_video` will return all public photos.
 
-        `?video` will return all videos available to the user.
+        `?uploaded_photo` will return all photos available to the user.
 
-        `?photo&video` will return both types.
+        `?uploaded_video` will return all videos available to the user.
 
+        You can `&` parameters together.
+        No parameters is same as having all parameters.
 
         #### Sample Response
         ```
         {
-            "photo": [
+            "public_photo": [
                 {
                     "id": 2,
-                    "exercise": 1,
-                    "title": "swag",
-                    "s3_url": "MOCK_S3_DOWNLOAD_URL"
+                    "name": "Squat",
+                    "download_url": "some url"
                 }
             ],
-            "video": [
+            "public_video": [],
+            "uploaded_photo": [
                 {
-                    "id": 4,
-                    "exercise": 1,
-                    "title": "swag",
-                    "s3_url": "MOCK_S3_DOWNLOAD_URL"
+                    "id": 1,
+                    "name": "Hello World",
+                    "download_url": "some url"
                 }
-            ]
+            ],
+            "uploaded_video": []
         }
         ```
         """
+        query_switches = get_query_switches(
+            request.query_params,
+            [
+                'public_photo',
+                'public_video',
+                'uploaded_photo',
+                'uploaded_video',
+            ],
+            all_true_on_none=True,
+        )
+
         response_dict = {}
 
-        if 'photo' in request.query_params:
-            datas = PhotoSerializer(
-                request.profile.photo_set.all(),
+        if 'public_photo' in query_switches:
+            response_dict['public_photo'] = DownloadMediaSerializer(
+                PublicPhoto.objects.all(),
                 many=True,
             ).data
-            for data in datas:
-                # TODO: Delete model from DB if S3 doesn't exist
-                data['s3_url'] = s3.get_download_url(data['s3_url'])
-            response_dict['photo'] = datas
 
-        if 'video' in request.query_params:
-            datas = VideoSerializer(
-                request.profile.video_set.all(),
+        if 'public_video' in query_switches:
+            response_dict['public_video'] = DownloadMediaSerializer(
+                PublicVideo.objects.all(),
                 many=True,
             ).data
-            for data in datas:
-                data['s3_url'] = s3.get_download_url(data['s3_url'])
-            response_dict['video'] = datas
+
+        if 'uploaded_photo' in query_switches:
+            response_dict['uploaded_photo'] = DownloadMediaSerializer(
+                request.profile.uploadedphoto_set.all(),
+                many=True,
+            ).data
+
+        if 'uploaded_video' in query_switches:
+            response_dict['uploaded_video'] = DownloadMediaSerializer(
+                request.profile.uploadedvideo_set.all(),
+                many=True,
+            ).data
 
         return Response(response_dict)
 
@@ -128,45 +137,48 @@ class MediasView(ProfileAuthedAPIView):
         """Get an S3 url to upload media to
 
         #### Body Parameters
-        * title: string
-        * exercise: integer
+        * name: string
+
+        #### Query Parameters
+        * photo (or video)
+        * video (or photo)
+
+        `?photo` will return a photo upload url.
+
+        `?video` will return a video upload url.
+
+        `photo` takes precedence over `video`.
 
         #### Sample Response
         ```
         {
-            "id": 5,
-            "exercise": 1,
-            "title": "swag",
-            "s3_url": "MOCK_S3_UPLOAD_URL"
+            "id": 2,
+            "name": "heyoo",
+            "upload_url": "some url"
         }
         ```
         """
-        if 'photo' in request.query_params:
-            CreateSerializer = CreatePhotoSerializer
-        elif 'video' in request.query_params:
-            CreateSerializer = CreateVideoSerializer
-        else:
-            return Response(
-                {
-                    'detail': 'One of `photo` or `video` '
-                    + 'query parameter is required',
-                }, status=status.HTTP_400_BAD_REQUEST,
-            )
+        query_switches = get_query_switches(
+            request.query_params,
+            ['photo', 'video'],
+            raise_on_none=True,
+        )
+
+        if 'photo' in query_switches:
+            UploadedSerializer = UploadedPhotoSerializer
+        elif 'video' in query_switches:
+            UploadedSerializer = UploadedVideoSerializer
 
         if request.data:
             request.data._mutable = True
             request.data['profile'] = request.profile.pk
-            request.data['s3_url'] = s3.create_bucket()
             request.data._mutable = False
 
-        serializer = CreateSerializer(data=request.data)
-
-        s3_upload_url = s3.get_upload_url(request.data['s3_url'])
+        serializer = UploadedSerializer(data=request.data)
 
         if serializer.is_valid():
             serializer.save()
             data = dict(serializer.data)
-            data['s3_url'] = s3_upload_url
             data.pop('profile', None)
             return Response(data, status=status.HTTP_201_CREATED)
 
@@ -178,29 +190,81 @@ class MediasView(ProfileAuthedAPIView):
 
 class MediaView(ProfileAuthedAPIView):
 
+    def get(self, request, pk):
+        """Get an S3 url to download media from
+
+        #### Query Parameters
+        * photo (or video)
+        * video (or photo)
+
+        `?photo` will return a photo download url.
+
+        `?video` will return a video download url.
+
+        `photo` takes precedence over `video`.
+
+        #### Sample Response
+        ```
+        {
+            "id": 7,
+            "name": "heyoo",
+            "download_url": "some download url"
+        }
+        ```
+        """
+        query_switches = get_query_switches(
+            request.query_params,
+            ['photo', 'video'],
+            raise_on_none=True,
+        )
+
+        if 'photo' in query_switches:
+            media = get_model_for_profile(
+                UploadedPhoto,
+                request.profile,
+                pk=pk,
+            )
+        elif 'video' in query_switches:
+            media = get_model_for_profile(
+                UploadedVideo,
+                request.profile,
+                pk=pk,
+            )
+
+        return Response(DownloadMediaSerializer(media).data)
+
     def delete(self, request, pk):
         """Delete media
 
         #### Query Parameters
         * photo (or video)
         * video (or photo)
+
+        `?photo` will delete photo of given id.
+
+        `?video` will delete video of given id.
+
+        `photo` takes precedence over `video`.
         """
-        if 'photo' in request.query_params:
-            media = get_object_or_404(Photo, pk=pk)
-            if media.profile != request.profile:
-                raise Http404()
-        elif 'video' in request.query_params:
-            media = get_object_or_404(Video, pk=pk)
-            if media.profile != request.profile:
-                raise Http404()
-        else:
-            return Response(
-                {
-                    'detail': 'One of `photo` or `video` '
-                    + 'query parameter is required',
-                }, status=status.HTTP_400_BAD_REQUEST,
+        query_switches = get_query_switches(
+            request.query_params,
+            ['photo', 'video'],
+            raise_on_none=True,
+        )
+
+        if 'photo' in query_switches:
+            media = get_model_for_profile(
+                UploadedPhoto,
+                request.profile,
+                pk=pk,
+            )
+        elif 'video' in query_switches:
+            media = get_model_for_profile(
+                UploadedVideo,
+                request.profile,
+                pk=pk,
             )
 
-        s3.delete_bucket(media.s3_url)
         media.delete()
+
         return Response(status=status.HTTP_204_NO_CONTENT)
