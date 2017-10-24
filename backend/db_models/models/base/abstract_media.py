@@ -1,6 +1,7 @@
-from db_models.models.exercise import Exercise
-from db_models.models.profile import Profile
+import uuid
+
 from django.db import models
+from lib.s3 import S3
 
 
 class AbstractMedia(models.Model):
@@ -8,21 +9,22 @@ class AbstractMedia(models.Model):
     class Meta:
         abstract = True
 
-    profile = models.ForeignKey(
-        Profile,
-        on_delete=models.CASCADE,
-        db_index=True,
-    )
+    name = models.CharField(max_length=64)
 
-    exercise = models.ForeignKey(
-        Exercise,
-        on_delete=models.CASCADE,
-        db_index=True,
-    )
+    s3_bucket = None
+    s3_key = models.UUIDField(default=uuid.uuid4, editable=False)
 
-    title = models.CharField(max_length=64)
+    def download_url(self):
+        download_url = S3.get_download_url(self.s3_bucket, self.s3_key)
 
-    s3_url = models.CharField(max_length=1024)
+        if not download_url:
+            self.delete()
+
+        return download_url
+
+    def delete(self):
+        S3.delete(self.s3_bucket, self.s3_key)
+        super().delete()
 
     def __str__(self):
-        return f'{self.exercise.name} {self.__class__.__name__}'
+        return f'{self.__class__.__name__}: {self.name}'

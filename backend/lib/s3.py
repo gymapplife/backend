@@ -1,14 +1,50 @@
-def create_bucket():
-    return 'MOCK_S3_BUCKET_URL'
+import abc
+
+from backend.settings import DEBUG
 
 
-def delete_bucket(bucket_url):
-    pass
+class _AbstractS3(metaclass=abc.ABCMeta):
+
+    @abc.abstractmethod
+    def get_upload_url(self, bucket, key):
+        pass
+
+    @abc.abstractmethod
+    def get_download_url(self, bucket, key):
+        pass
+
+    @abc.abstractmethod
+    def delete(self, bucket, key):
+        pass
 
 
-def get_upload_url(bucket_url):
-    return 'MOCK_S3_UPLOAD_URL'
+class _MockS3(_AbstractS3):
+
+    def get_upload_url(self, bucket, key):
+        return f'upload | {bucket} | {key}'
+
+    def get_download_url(self, bucket, key):
+        return f'download | {bucket} | {key}'
+
+    def delete(self, bucket, key):
+        pass
 
 
-def get_download_url(bucket_url):
-    return 'MOCK_S3_DOWNLOAD_URL'
+class _S3(_AbstractS3):
+    """George: boto3.readthedocs.io/en/latest/reference/services/s3.html
+    Look for `presigned`
+    """
+
+    def get_upload_url(self, bucket, key):
+        pass
+
+    def get_download_url(self, bucket, key):
+        """Please return None if does not exist.
+        """
+        pass
+
+    def delete(self, bucket, key):
+        pass
+
+
+S3 = _MockS3() if DEBUG else _S3()

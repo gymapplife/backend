@@ -7,11 +7,12 @@ from db_models.models.custom_workout_day import CustomWorkoutDayException
 from db_models.models.custom_workout_program import CustomWorkoutProgram
 from db_models.models.workout_program import WorkoutProgram
 from django.db import transaction
-from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from rest_framework import status
 from rest_framework.response import Response
+from utils.models import get_model_for_profile
+from utils.query import get_query_switches
 
 
 class WorkoutProgramSerializer(serializers.ModelSerializer):
@@ -53,16 +54,15 @@ class WorkoutProgramsView(ProfileAuthedAPIView):
         """Get a list of workout programs
 
         #### Query Parameters
-        * default: 1 (optional)
-        * custom: 1 (optional)
-
-        No query parameters will return nothing.
+        * default (optional)
+        * custom (optional)
 
         `?default` will return all default programs.
 
         `?custom` will return all custom programs available to the user.
 
-        `?default&custom` will return both types.
+        You can `&` parameters together.
+        No parameters is same as having all parameters.
 
 
         #### Sample Response
@@ -87,13 +87,19 @@ class WorkoutProgramsView(ProfileAuthedAPIView):
         """
         response_dict = {}
 
-        if 'default' in request.query_params:
+        query_switches = get_query_switches(
+            request.query_params,
+            ['default', 'custom'],
+            all_true_on_none=True,
+        )
+
+        if 'default' in query_switches:
             response_dict['default'] = WorkoutProgramSerializer(
                 WorkoutProgram.objects.all(),
                 many=True,
             ).data
 
-        if 'custom' in request.query_params:
+        if 'custom' in query_switches:
             response_dict['custom'] = WorkoutProgramSerializer(
                 request.profile.customworkoutprogram_set.all(),
                 many=True,
@@ -231,15 +237,12 @@ class WorkoutProgramView(ProfileAuthedAPIView):
         * default (or custom)
         * custom (or default)
 
-        No query parameters will return 400.
-
         `?default` will return a default program of given id.
 
         `?custom` will return a custom program of given id, if
         available to the user; 404 otherwise.
 
         `default` takes precedence over `custom`.
-
 
         #### Sample Response
         ```
@@ -274,21 +277,22 @@ class WorkoutProgramView(ProfileAuthedAPIView):
         }
         ```
         """
-        if 'default' in request.query_params:
+        query_switches = get_query_switches(
+            request.query_params,
+            ['default', 'custom'],
+            raise_on_none=True,
+        )
+
+        if 'default' in query_switches:
             program = get_object_or_404(WorkoutProgram, pk=pk)
             days = program.workoutday_set.all()
-        elif 'custom' in request.query_params:
-            program = get_object_or_404(CustomWorkoutProgram, pk=pk)
-            if program.profile != request.profile:
-                raise Http404()
-            days = program.customworkoutday_set.all()
-        else:
-            return Response(
-                {
-                    'detail': 'One of `default` or `custom` '
-                    + 'query parameter is required',
-                }, status=status.HTTP_400_BAD_REQUEST,
+        elif 'custom' in query_switches:
+            program = get_model_for_profile(
+                CustomWorkoutProgram,
+                request.profile,
+                pk=pk,
             )
+            days = program.customworkoutday_set.all()
 
         return Response(
             WorkoutProgramView.get_workout_program(
@@ -351,9 +355,11 @@ class WorkoutProgramView(ProfileAuthedAPIView):
         }
         ```
         """
-        program = get_object_or_404(CustomWorkoutProgram, pk=pk)
-        if program.profile != request.profile:
-            raise Http404()
+        program = get_model_for_profile(
+            CustomWorkoutProgram,
+            request.profile,
+            pk=pk,
+        )
 
         if request.data:
             name = request.data.get('name')
@@ -424,9 +430,11 @@ class WorkoutProgramView(ProfileAuthedAPIView):
     def delete(self, request, pk):
         """Delete a custom workout program
         """
-        program = get_object_or_404(CustomWorkoutProgram, pk=pk)
-        if program.profile != request.profile:
-            raise Http404()
+        program = get_model_for_profile(
+            CustomWorkoutProgram,
+            request.profile,
+            pk=pk,
+        )
 
         program.delete()
 

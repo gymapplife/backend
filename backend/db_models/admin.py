@@ -2,9 +2,11 @@ from db_models.models.custom_workout_day import CustomWorkoutDay
 from db_models.models.custom_workout_program import CustomWorkoutProgram
 from db_models.models.day_of_week import DayOfWeek
 from db_models.models.exercise import Exercise
-from db_models.models.photo import Photo
 from db_models.models.profile import Profile
-from db_models.models.video import Video
+from db_models.models.public_photo import PublicPhoto
+from db_models.models.public_video import PublicVideo
+from db_models.models.uploaded_photo import UploadedPhoto
+from db_models.models.uploaded_video import UploadedVideo
 from db_models.models.workout_day import WorkoutDay
 from db_models.models.workout_program import WorkoutProgram
 from django.contrib import admin
@@ -31,7 +33,7 @@ class ProfileAdmin(admin.ModelAdmin):
 @admin.register(Exercise)
 class ExerciseAdmin(admin.ModelAdmin):
 
-    list_display = ('name', 'primary_muscle')
+    list_display = ('name', 'primary_muscle', 'photo', 'video')
 
 
 @admin.register(WorkoutProgram)
@@ -74,21 +76,25 @@ class CustomWorkoutDayAdmin(admin.ModelAdmin):
     )
 
 
-@admin.register(Photo)
-class PhotoAdmin(admin.ModelAdmin):
+@admin.register(PublicPhoto)
+class PublicPhotoAdmin(admin.ModelAdmin):
 
-    list_display = (
-        'title',
-        'exercise',
-        'profile',
-    )
+    list_display = ('name', 'download_url')
 
 
-@admin.register(Video)
-class VideoAdmin(admin.ModelAdmin):
+@admin.register(PublicVideo)
+class PublicVideoAdmin(admin.ModelAdmin):
 
-    list_display = (
-        'title',
-        'exercise',
-        'profile',
-    )
+    list_display = ('name', 'download_url')
+
+
+@admin.register(UploadedPhoto)
+class UploadedPhotoAdmin(admin.ModelAdmin):
+
+    list_display = ('name', 'download_url')
+
+
+@admin.register(UploadedVideo)
+class UploadedVideoAdmin(admin.ModelAdmin):
+
+    list_display = ('name', 'download_url')
