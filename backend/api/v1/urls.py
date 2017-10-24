@@ -1,5 +1,5 @@
-from api.v1.endpoints.media import MediasView
-from api.v1.endpoints.media import MediaView
+# from api.v1.endpoints.media import MediasView
+# from api.v1.endpoints.media import MediaView
 from api.v1.endpoints.profile import ProfileView
 from api.v1.endpoints.workout_program import WorkoutProgramsView
 from api.v1.endpoints.workout_program import WorkoutProgramView
@@ -20,12 +20,12 @@ urlpatterns = [
         r'^workout-programs/(?P<pk>[0-9]+)/$', WorkoutProgramView.as_view(),
         name='workout_program',
     ),
-    url(
-        r'^media/$', MediasView.as_view(),
-        name='medias',
-    ),
-    url(
-        r'^media/(?P<pk>[0-9]+)/$', MediaView.as_view(),
-        name='media',
-    ),
+    # url(
+    #     r'^media/$', MediasView.as_view(),
+    #     name='medias',
+    # ),
+    # url(
+    #     r'^media/(?P<pk>[0-9]+)/$', MediaView.as_view(),
+    #     name='media',
+    # ),
 ]
