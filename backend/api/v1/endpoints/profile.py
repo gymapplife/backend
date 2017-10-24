@@ -8,6 +8,10 @@ from rest_framework.response import Response
 from utils.response import NoProfileForbiddenResponse
 
 
+class NotYourProgramException(Exception):
+    pass
+
+
 class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -47,8 +51,8 @@ class ProfileView(AuthedAPIView):
         ```
         """
         try:
-            profile = Profile.objects.get(id=request.fb_id)
-        except:
+            profile = Profile.objects.get(pk=request.fb_id)
+        except Profile.DoesNotExist:
             return NoProfileForbiddenResponse()
 
         serializer = ProfileSerializer(profile)
@@ -79,12 +83,12 @@ class ProfileView(AuthedAPIView):
         ```
         """
         try:
-            Profile.objects.get(id=request.fb_id)
+            Profile.objects.get(pk=request.fb_id)
             return Response(
-                {'id': f'"{request.fb_id}" already in use.'},
+                {'id': f'Facebook ID "{request.fb_id}" already in use.'},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        except:
+        except Profile.DoesNotExist:
             pass
 
         if request.data:
@@ -142,18 +146,21 @@ class ProfileView(AuthedAPIView):
         ```
         """
         try:
-            profile = Profile.objects.get(id=request.fb_id)
-        except:
+            profile = Profile.objects.get(pk=request.fb_id)
+        except Profile.DoesNotExist:
             return NoProfileForbiddenResponse()
 
-        if request.data and 'current_custom_workout_program' in request.data:
-            pk = request.data['current_custom_workout_program']
+        if request.data:
+            pk = request.data.get('current_custom_workout_program')
             try:
-                if not CustomWorkoutProgram.objects.get(
-                    id=pk,
-                ).profile.id == profile.id:
-                    raise Exception()
-            except:
+                if pk and CustomWorkoutProgram.objects.get(
+                    pk=pk,
+                ).profile != profile:
+                    raise NotYourProgramException()
+            except (
+                CustomWorkoutProgram.DoesNotExist,
+                NotYourProgramException,
+            ):
                 msg = f'Invalid pk "{pk}" - object does not exist.'
                 return Response(
                     {
@@ -185,8 +192,8 @@ class ProfileView(AuthedAPIView):
         """Delete profile
         """
         try:
-            profile = Profile.objects.get(id=request.fb_id)
-        except:
+            profile = Profile.objects.get(pk=request.fb_id)
+        except Profile.DoesNotExist:
             return NoProfileForbiddenResponse()
 
         profile.delete()

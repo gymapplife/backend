@@ -1,4 +1,5 @@
 Django==1.11.6
 django-rest-swagger==2.1.2
-djangorestframework==3.6.4
+djangorestframework==3.7.1
 facebook-sdk==2.0.0
+simplejson==3.11.1
