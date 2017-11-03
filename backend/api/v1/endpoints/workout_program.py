@@ -23,6 +23,7 @@ class WorkoutProgramSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'length',
+            'description',
         )
 
 
@@ -72,14 +73,16 @@ class WorkoutProgramsView(ProfileAuthedAPIView):
                 {
                     "id": 1,
                     "name": "StrongLifts 5x5",
-                    "length": 30
+                    "length": 30,
+                    "description": "Hello."
                 }
             ],
             "custom": [
                 {
                     "id": 1,
                     "name": "Gary's Custom",
-                    "length": 15
+                    "length": 15,
+                    "description": "World."
                 }
             ]
         }
@@ -112,6 +115,7 @@ class WorkoutProgramsView(ProfileAuthedAPIView):
 
         #### Body Parameters
         * name: string
+        * description: string (optional)
         * days: json string (optional)
 
         ##### Days format
@@ -136,7 +140,8 @@ class WorkoutProgramsView(ProfileAuthedAPIView):
             "program": {
                 "id": 11,
                 "name": "Super",
-                "length": 10
+                "length": 10,
+                "description": "World."
             },
             "days": {
                 "1": [
@@ -182,6 +187,7 @@ class WorkoutProgramsView(ProfileAuthedAPIView):
                     profile=request.profile,
                     name=request.data['name'],
                     length=0,
+                    description=request.data['name'], ,
                 )
                 days_string = request.data.get('days')
                 if days_string:
