@@ -170,24 +170,12 @@ class WorkoutProgramsView(ProfileAuthedAPIView):
             )
 
         try:
-            CustomWorkoutProgram.objects.get(
-                profile=request.profile,
-                name=request.data['name'],
-            )
-            return Response(
-                {'name': 'Name already in use.'},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-        except CustomWorkoutProgram.DoesNotExist:
-            pass
-
-        try:
             with transaction.atomic():
                 program = CustomWorkoutProgram.objects.create(
                     profile=request.profile,
                     name=request.data['name'],
                     length=0,
-                    description=request.data['name'], ,
+                    description=request.data.get('description') or '',
                 )
                 days_string = request.data.get('days')
                 if days_string:
