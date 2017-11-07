@@ -12,7 +12,7 @@ class WorkoutDaySerializer(serializers.ModelSerializer):
             'day_of_week',
             'sets',
             'reps',
-            'weights',
+            'weight',
         )
 
 
@@ -25,6 +25,7 @@ class CustomWorkoutDaySerializer(serializers.ModelSerializer):
             'day',
             'exercise',
             'day_of_week',
+            'sets',
             'reps',
-            'weights',
+            'weight',
         )

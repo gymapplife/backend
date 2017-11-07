@@ -123,10 +123,11 @@ class WorkoutProgramsView(ProfileAuthedAPIView):
         {
             "1":[
                 {
-                    "exercise":0,
-                    "day_of_week":1,
-                    "reps":"5,5,5,5,5",
-                    "weights":"45,45,45,45,45"
+                    "exercise": 0,
+                    "day_of_week": 1,
+                    "sets": 5,
+                    "reps": 5,
+                    "weight": 45
                 },
                 ...
             ],
@@ -149,8 +150,8 @@ class WorkoutProgramsView(ProfileAuthedAPIView):
                         "exercise": 0,
                         "day_of_week": 1,
                         "sets": 5,
-                        "reps": "5,5,5,5,5",
-                        "weights": "45,45,45,45,45"
+                        "reps": 5,
+                        "weight": 45
                     },
                     ...
                 ],
@@ -244,7 +245,8 @@ class WorkoutProgramView(ProfileAuthedAPIView):
             "program": {
                 "id": 1,
                 "name": "StrongLifts 5x5",
-                "length": 30
+                "length": 30,
+                "description": "Hey"
             },
             "days": {
                 "1": [
@@ -252,18 +254,9 @@ class WorkoutProgramView(ProfileAuthedAPIView):
                         "exercise": 0,
                         "day_of_week": 1,
                         "sets": 5,
-                        "reps": "5,5,5,5,5",
-                        "weights": "45,45,45,45,45"
+                        "reps": 5,
+                        "weight": 45
                     },
-                    {
-                        "exercise": 1,
-                        "day_of_week": 1,
-                        "sets": 5,
-                        "reps": "5,5,5,5,5",
-                        "weights": "45,45,45,45,45"
-                    }
-                ],
-                "2": [
                     ...
                 ],
                 ...
@@ -309,14 +302,15 @@ class WorkoutProgramView(ProfileAuthedAPIView):
         {
             "1":[
                 {
-                    "exercise":0,
-                    "day_of_week":1,
-                    "reps":"5,5,5,5,5",
-                    "weights":"45,45,45,45,45"
+                    "exercise": 0,
+                    "day_of_week": 1,
+                    "sets": 5,
+                    "reps": 5,
+                    "weight": 45
                 },
                 {
-                    "exercise":3,
-                    "delete":true
+                    "exercise": 3,
+                    "delete": true
                 },
                 ...
             ],
@@ -341,8 +335,8 @@ class WorkoutProgramView(ProfileAuthedAPIView):
                         "exercise": 0,
                         "day_of_week": 1,
                         "sets": 5,
-                        "reps": "5,5,5,5,5",
-                        "weights": "45,45,45,45,45"
+                        "reps": 5,
+                        "weight": 45
                     },
                     ...
                 ],
