@@ -23,6 +23,7 @@ class WorkoutProgramSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'length',
+            'description',
         )
 
 
@@ -72,14 +73,16 @@ class WorkoutProgramsView(ProfileAuthedAPIView):
                 {
                     "id": 1,
                     "name": "StrongLifts 5x5",
-                    "length": 30
+                    "length": 30,
+                    "description": "Hello."
                 }
             ],
             "custom": [
                 {
                     "id": 1,
                     "name": "Gary's Custom",
-                    "length": 15
+                    "length": 15,
+                    "description": "World."
                 }
             ]
         }
@@ -112,6 +115,7 @@ class WorkoutProgramsView(ProfileAuthedAPIView):
 
         #### Body Parameters
         * name: string
+        * description: string (optional)
         * days: json string (optional)
 
         ##### Days format
@@ -136,7 +140,8 @@ class WorkoutProgramsView(ProfileAuthedAPIView):
             "program": {
                 "id": 11,
                 "name": "Super",
-                "length": 10
+                "length": 10,
+                "description": "World."
             },
             "days": {
                 "1": [
@@ -165,23 +170,12 @@ class WorkoutProgramsView(ProfileAuthedAPIView):
             )
 
         try:
-            CustomWorkoutProgram.objects.get(
-                profile=request.profile,
-                name=request.data['name'],
-            )
-            return Response(
-                {'name': 'Name already in use.'},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-        except CustomWorkoutProgram.DoesNotExist:
-            pass
-
-        try:
             with transaction.atomic():
                 program = CustomWorkoutProgram.objects.create(
                     profile=request.profile,
                     name=request.data['name'],
                     length=0,
+                    description=request.data.get('description') or '',
                 )
                 days_string = request.data.get('days')
                 if days_string:
@@ -306,6 +300,7 @@ class WorkoutProgramView(ProfileAuthedAPIView):
 
         #### Body Parameters
         * name: string (optional)
+        * description: string (optional)
         * days: json string (optional)
 
         ##### Days format
@@ -337,7 +332,8 @@ class WorkoutProgramView(ProfileAuthedAPIView):
             "program": {
                 "id": 11,
                 "name": "Super",
-                "length": 10
+                "length": 10,
+                "description": "Gary."
             },
             "days": {
                 "1": [
@@ -369,19 +365,11 @@ class WorkoutProgramView(ProfileAuthedAPIView):
                         {'name': 'Must be a non-empty string.'},
                         status=status.HTTP_400_BAD_REQUEST,
                     )
-                try:
-                    CustomWorkoutProgram.objects.get(
-                        profile=request.profile,
-                        name=request.data['name'],
-                    )
-                    return Response(
-                        {'name': 'Name already in use.'},
-                        status=status.HTTP_400_BAD_REQUEST,
-                    )
-                except CustomWorkoutProgram.DoesNotExist:
-                    pass
                 program.name = name
-                program.save()
+            if 'description' in request.data:
+                program.description = request.data['description'] or ''
+            program.full_clean()
+            program.save()
 
             days_string = request.data.get('days')
             if days_string:

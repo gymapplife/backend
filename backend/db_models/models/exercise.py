@@ -12,12 +12,14 @@ class Exercise(models.Model):
         PublicPhoto,
         on_delete=models.SET_NULL,
         null=True,
+        blank=True,
     )
 
     video = models.OneToOneField(
         PublicVideo,
         on_delete=models.SET_NULL,
         null=True,
+        blank=True,
     )
 
     def __str__(self):

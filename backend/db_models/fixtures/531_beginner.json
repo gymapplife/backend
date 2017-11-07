@@ -1,10 +1,11 @@
 [
     {
-        "model": "db_models.workoutprogram",
-        "pk": 2,
-        "fields": {
-            "name": "5/3/1 Beginner",
-            "length": 9
+        "model":"db_models.workoutprogram",
+        "pk":2,
+        "fields":{
+            "name":"5/3/1 Beginner",
+            "length":9,
+            "description":"You perform a full-body routine, three days a week. You focus on two main compound lifts each day, and incrementally weight on a 3 week cycle."
         }
     },
     {
