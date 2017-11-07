@@ -52,7 +52,7 @@ class WorkoutDayAdmin(admin.ModelAdmin):
         'day_of_week',
         'sets',
         'reps',
-        'weights',
+        'weight',
     )
 
 
@@ -72,7 +72,7 @@ class CustomWorkoutDayAdmin(admin.ModelAdmin):
         'day_of_week',
         'sets',
         'reps',
-        'weights',
+        'weight',
     )
 
 

@@ -50,5 +50,5 @@ Profile.objects.create(pk=2, goal='STRENGTH_TRAINING', experience='BEGINNER', we
   python manage.py loaddata db_models/fixtures/exercise.json
   python manage.py loaddata db_models/fixtures/day_of_week.json
   python manage.py loaddata db_models/fixtures/stronglifts_5x5.json
-  python manage.py loaddata db_models/fixtures/531_beginner.json
+  # python manage.py loaddata db_models/fixtures/531_beginner.json
 fi
