@@ -1,3 +1,5 @@
+from api.v1.endpoints.exercise import ExercisesView
+from api.v1.endpoints.exercise import ExerciseView
 from api.v1.endpoints.media import MediasView
 from api.v1.endpoints.media import MediaView
 from api.v1.endpoints.profile import ProfileView
@@ -8,6 +10,7 @@ from rest_framework_swagger.views import get_swagger_view
 
 
 schema_view = get_swagger_view(title='API Documentation')
+
 
 urlpatterns = [
     url('^$', schema_view),
@@ -27,5 +30,13 @@ urlpatterns = [
     url(
         r'^media/(?P<pk>[0-9]+)/$', MediaView.as_view(),
         name='media',
+    ),
+    url(
+        r'^exercise/$', ExercisesView.as_view(),
+        name='exercises',
+    ),
+    url(
+        r'^exercise/(?P<pk>[0-9]+)/$', ExerciseView.as_view(),
+        name='exercise',
     ),
 ]
