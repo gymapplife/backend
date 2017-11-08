@@ -367,7 +367,8 @@ class WorkoutProgramView(ProfileAuthedAPIView):
                         "day_of_week": 1,
                         "sets": 5,
                         "reps": 5,
-                        "weight": 45
+                        "weight": 45,
+                        "log": "5,5,5,4,3"
                     },
                     ...
                 ],
@@ -437,6 +438,8 @@ class WorkoutProgramView(ProfileAuthedAPIView):
             WorkoutProgramView.get_workout_program(
                 program,
                 program.customworkoutday_set.all(),
+                profile=request.profile,
+                default=False,
             ),
         )
 
