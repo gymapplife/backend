@@ -16,6 +16,7 @@ class WorkoutLogSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'profile',
+            'created',
             'workout_day',
             'reps',
         )
@@ -28,6 +29,7 @@ class CustomWorkoutLogSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'profile',
+            'created',
             'workout_day',
             'reps',
         )
@@ -129,4 +131,4 @@ class WorkoutLogView(ProfileAuthedAPIView):
         errors = dict(serializer.errors)
         errors.pop('profile', None)
 
-        return Response(errors)
+        return Response(errors, status=status.HTTP_400_BAD_REQUEST)

@@ -2,6 +2,7 @@ from api.v1.endpoints.exercise import ExercisesView
 from api.v1.endpoints.exercise import ExerciseView
 from api.v1.endpoints.media import MediasView
 from api.v1.endpoints.media import MediaView
+from api.v1.endpoints.personal_record import PersonalRecordView
 from api.v1.endpoints.profile import ProfileView
 from api.v1.endpoints.workout_log import WorkoutLogView
 from api.v1.endpoints.workout_program import WorkoutProgramsView
@@ -39,6 +40,10 @@ urlpatterns = [
     url(
         r'^exercise/(?P<pk>[0-9]+)/$', ExerciseView.as_view(),
         name='exercise',
+    ),
+    url(
+        r'^personal-record/$', PersonalRecordView.as_view(),
+        name='personal_record',
     ),
     url(
         r'^workout-log/$', WorkoutLogView.as_view(),

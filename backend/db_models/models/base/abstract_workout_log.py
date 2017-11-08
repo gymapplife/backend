@@ -14,6 +14,8 @@ class AbstractWorkoutLog(models.Model):
         db_index=True,
     )
 
+    created = models.DateTimeField(auto_now_add=True)
+
     # Comma separated string of how many reps the user did for each set
     # eg. 5,5,5,4,3
     # Idk why anyone would want 64 chars worth, but w.e
