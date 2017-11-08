@@ -65,7 +65,6 @@ class WorkoutProgramsView(ProfileAuthedAPIView):
         You can `&` parameters together.
         No parameters is same as having all parameters.
 
-
         #### Sample Response
         ```
         {

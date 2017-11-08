@@ -13,7 +13,7 @@ def get_query_switches(
         for switch in switches:
             if switch in query_params:
                 value = query_params[switch]
-                if value == '' or value == 1:
+                if value == '' or value == '1':
                     active_switches.add(switch)
 
     if not active_switches:

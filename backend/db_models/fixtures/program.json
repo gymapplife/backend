@@ -1,0 +1,19 @@
+[
+{
+  "model":"db_models.workoutprogram",
+  "pk": 1,
+  "fields": {
+       "name":"StrongLifts 5x5",
+       "length":30,
+       "description":"You workout three times a week, where you do three barbell exercises for sets of five reps. Together they work your whole body."
+   }
+},
+{
+  "model":"db_models.workoutprogram",
+  "pk": 2,
+  "fields": {
+       "name":"531 Beginner",
+       "length":9,
+       "description":"You perform a full-body routine, three days a week. You focus on two main compound lifts each day, and incrementally weight on a 3 week cycle. "
+   }
+}]

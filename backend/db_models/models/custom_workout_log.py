@@ -7,7 +7,7 @@ from django.db import models
 
 class CustomWorkoutLog(AbstractWorkoutLog):
 
-    workout_day = models.ForeignKey(
+    workout_day = models.OneToOneField(
         CustomWorkoutDay,
         on_delete=models.SET_NULL,
         db_index=True,
