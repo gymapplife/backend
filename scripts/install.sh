@@ -49,6 +49,6 @@ Profile.objects.create(pk=2, goal='STRENGTH_TRAINING', experience='BEGINNER', we
   echo "$COMMAND" | python manage.py shell
   python manage.py loaddata db_models/fixtures/exercise.json
   python manage.py loaddata db_models/fixtures/day_of_week.json
-  python manage.py loaddata db_models/fixtures/stronglifts_5x5.json
-  # python manage.py loaddata db_models/fixtures/531_beginner.json
+  python manage.py loaddata db_models/fixtures/program.json
+  python manage.py loaddata db_models/fixtures/workout_day.json
 fi

@@ -4,7 +4,9 @@ from api.v1.endpoints.workout_day import WorkoutDaySerializer
 from api.views import ProfileAuthedAPIView
 from db_models.models.custom_workout_day import CustomWorkoutDay
 from db_models.models.custom_workout_day import CustomWorkoutDayException
+from db_models.models.custom_workout_log import CustomWorkoutLog
 from db_models.models.custom_workout_program import CustomWorkoutProgram
+from db_models.models.workout_log import WorkoutLog
 from db_models.models.workout_program import WorkoutProgram
 from django.db import transaction
 from django.shortcuts import get_object_or_404
@@ -64,7 +66,6 @@ class WorkoutProgramsView(ProfileAuthedAPIView):
 
         You can `&` parameters together.
         No parameters is same as having all parameters.
-
 
         #### Sample Response
         ```
@@ -147,6 +148,7 @@ class WorkoutProgramsView(ProfileAuthedAPIView):
             "days": {
                 "1": [
                     {
+                        "id": 1,
                         "exercise": 0,
                         "day_of_week": 1,
                         "sets": 5,
@@ -209,7 +211,7 @@ class WorkoutProgramsView(ProfileAuthedAPIView):
 class WorkoutProgramView(ProfileAuthedAPIView):
 
     @staticmethod
-    def get_workout_program(program, days):
+    def get_workout_program(program, days, profile=None, default=None):
         days_dict = {}
         for day in days:
             if day.day in days_dict:
@@ -217,8 +219,33 @@ class WorkoutProgramView(ProfileAuthedAPIView):
             else:
                 days_dict[day.day] = [day]
 
-        for day, day_list in days_dict.items():
-            days_dict[day] = WorkoutDaySerializer(day_list, many=True).data
+        if profile:
+            for day, day_list in days_dict.items():
+                days_dict[day] = WorkoutDaySerializer(day_list, many=True).data
+                for i, workout_day in enumerate(days_dict[day]):
+                    workout_day = dict(workout_day)
+                    workout_day['log'] = None
+                    try:
+                        if default:
+                            workout_day['log'] = WorkoutLog.objects.get(
+                                profile=profile,
+                                workout_day=workout_day['id'],
+                            ).reps
+                        else:
+                            workout_day['log'] = CustomWorkoutLog.objects.get(
+                                profile=profile,
+                                workout_day=workout_day['id'],
+                            ).reps
+                    except (
+                        WorkoutLog.DoesNotExist,
+                        CustomWorkoutLog.DoesNotExist,
+                    ):
+                        pass
+
+                    days_dict[day][i] = workout_day
+        else:
+            for day, day_list in days_dict.items():
+                days_dict[day] = WorkoutDaySerializer(day_list, many=True).data
 
         return {
             'program': WorkoutProgramSerializer(program).data,
@@ -251,11 +278,13 @@ class WorkoutProgramView(ProfileAuthedAPIView):
             "days": {
                 "1": [
                     {
+                        "id": 1,
                         "exercise": 0,
                         "day_of_week": 1,
                         "sets": 5,
                         "reps": 5,
-                        "weight": 45
+                        "weight": 45,
+                        "log": "5,5,5,4,3"
                     },
                     ...
                 ],
@@ -273,7 +302,7 @@ class WorkoutProgramView(ProfileAuthedAPIView):
         if 'default' in query_switches:
             program = get_object_or_404(WorkoutProgram, pk=pk)
             days = program.workoutday_set.all()
-        elif 'custom' in query_switches:
+        else:
             program = get_model_for_profile(
                 CustomWorkoutProgram,
                 request.profile,
@@ -285,6 +314,8 @@ class WorkoutProgramView(ProfileAuthedAPIView):
             WorkoutProgramView.get_workout_program(
                 program,
                 days,
+                profile=request.profile,
+                default=('default' in query_switches),
             ),
         )
 
