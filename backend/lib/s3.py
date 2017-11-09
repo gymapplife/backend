@@ -1,4 +1,5 @@
 import abc
+import boto3
 
 from backend.settings import DEBUG
 
@@ -35,16 +36,43 @@ class _S3(_AbstractS3):
     Look for `presigned`
     """
 
+    def __init__(self):
+        self.client = boto3.client('s3')
+
     def get_upload_url(self, bucket, key):
-        pass
+        resp = self.client.generate_presigned_url(
+            'put_object',
+            Params={
+                'Bucket': bucket,
+                'Key': key
+            },
+            HttpMethod='PUT'
+        )
+        return resp
 
     def get_download_url(self, bucket, key):
         """Please return None if does not exist.
         """
-        pass
+        try:
+            self.client.head_object(Bucket=bucket, Key=key)
+        except:
+            return None
+
+        resp = self.client.generate_presigned_url(
+            'get_object',
+            Params={
+                'Bucket': bucket,
+                'Key': key
+            },
+            HttpMethod='GET'
+        )
+        return resp
 
     def delete(self, bucket, key):
-        pass
+        self.client.delete_object(
+            Bucket=bucket,
+            Key=key
+        )
 
 
 S3 = _MockS3() if DEBUG else _S3()
