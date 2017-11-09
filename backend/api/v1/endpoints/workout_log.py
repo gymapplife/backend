@@ -37,7 +37,7 @@ class CustomWorkoutLogSerializer(serializers.ModelSerializer):
         )
 
 
-class WorkoutLogView(ProfileAuthedAPIView):
+class WorkoutLogsView(ProfileAuthedAPIView):
 
     def put(self, request):
         """Create or patch workout log
@@ -140,3 +140,38 @@ class WorkoutLogView(ProfileAuthedAPIView):
         errors.pop('profile', None)
 
         return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class WorkoutLogView(ProfileAuthedAPIView):
+
+    def get(self, request, pk):
+        """Get weight lifted for an exercise over time
+
+        #### Sample Response
+        ```
+        [
+            [
+                "2017-11-09 01:48:31.481582+00:00",
+                45
+            ],
+            [
+                "2017-11-09 01:51:43.282095+00:00",
+                2
+            ]
+        ]
+        ```
+        """
+        logs1 = WorkoutLog.objects.filter(
+            profile=request.profile,
+            workout_day__exercise=pk,
+        ).all()
+        logs2 = CustomWorkoutLog.objects.filter(
+            profile=request.profile,
+            workout_day__exercise=pk,
+        ).all()
+        result = []
+        for log in logs1:
+            result.append([str(log.created), log.workout_day.weight])
+        for log in logs2:
+            result.append([str(log.created), log.workout_day.weight])
+        return Response(result)
