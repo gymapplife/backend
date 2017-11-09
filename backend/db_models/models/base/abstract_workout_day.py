@@ -16,8 +16,8 @@ class AbstractWorkoutDay(models.Model):
     def exercise_name(self):
         return self.exercise.name
 
-    day = models.PositiveSmallIntegerField()
     week = models.PositiveSmallIntegerField()
+    day = models.PositiveSmallIntegerField()
     sets = models.PositiveSmallIntegerField()
     reps = models.PositiveSmallIntegerField()
     weight = models.PositiveSmallIntegerField()

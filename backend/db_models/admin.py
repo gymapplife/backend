@@ -2,6 +2,7 @@ from db_models.models.custom_workout_day import CustomWorkoutDay
 from db_models.models.custom_workout_log import CustomWorkoutLog
 from db_models.models.custom_workout_program import CustomWorkoutProgram
 from db_models.models.exercise import Exercise
+from db_models.models.food_log import FoodLog
 from db_models.models.personal_record import PersonalRecord
 from db_models.models.profile import Profile
 from db_models.models.public_photo import PublicPhoto
@@ -23,6 +24,21 @@ class ProfileAdmin(admin.ModelAdmin):
         'experience',
         'weight',
         'height',
+    )
+
+
+@admin.register(FoodLog)
+class FoodLogAdmin(admin.ModelAdmin):
+
+    list_display = (
+        'id',
+        'profile',
+        'name',
+        'created',
+        'calories',
+        'meal',
+        'week',
+        'day',
     )
 
 
