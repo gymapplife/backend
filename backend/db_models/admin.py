@@ -1,7 +1,6 @@
 from db_models.models.custom_workout_day import CustomWorkoutDay
 from db_models.models.custom_workout_log import CustomWorkoutLog
 from db_models.models.custom_workout_program import CustomWorkoutProgram
-from db_models.models.day_of_week import DayOfWeek
 from db_models.models.exercise import Exercise
 from db_models.models.personal_record import PersonalRecord
 from db_models.models.profile import Profile
@@ -13,12 +12,6 @@ from db_models.models.workout_day import WorkoutDay
 from db_models.models.workout_log import WorkoutLog
 from db_models.models.workout_program import WorkoutProgram
 from django.contrib import admin
-
-
-@admin.register(DayOfWeek)
-class DayOfWeekAdmin(admin.ModelAdmin):
-
-    list_display = ('id', 'name')
 
 
 @admin.register(Profile)
@@ -58,7 +51,7 @@ class WorkoutDayAdmin(admin.ModelAdmin):
         'workout_program',
         'exercise',
         'day',
-        'day_of_week',
+        'week',
         'sets',
         'reps',
         'weight',
@@ -84,7 +77,7 @@ class CustomWorkoutDayAdmin(admin.ModelAdmin):
         'workout_program',
         'exercise',
         'day',
-        'day_of_week',
+        'week',
         'sets',
         'reps',
         'weight',

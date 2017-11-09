@@ -31,24 +31,14 @@ class WorkoutProgramSerializer(serializers.ModelSerializer):
 
 def _process_days_string(program, days_string):
     try:
-        days = json.loads(days_string)
+        workout_days = json.loads(days_string)
     except json.scanner.JSONDecodeError:
         raise CustomWorkoutDayException('Invalid JSON.')
-    for day, exercises in days.items():
-        try:
-            day = int(day)
-        except ValueError:
-            raise CustomWorkoutDayException(f'"{day}" is not an integer.')
-        for exercise in exercises:
-            exercise['workout_program'] = program.pk
-            exercise['day'] = day
 
-    # https://stackoverflow.com/questions/952914/making-a-flat-list-out-of-list-of-lists-in-python
-    return [
-        item for sublist in list(
-            days.values(),
-        ) for item in sublist
-    ]
+    for workout_day in workout_days:
+        workout_day['workout_program'] = program.pk
+
+    return workout_days
 
 
 class WorkoutProgramsView(ProfileAuthedAPIView):
@@ -121,42 +111,42 @@ class WorkoutProgramsView(ProfileAuthedAPIView):
 
         ##### Days format
         ```
-        {
-            "1":[
-                {
-                    "exercise": 0,
-                    "day_of_week": 1,
-                    "sets": 5,
-                    "reps": 5,
-                    "weight": 45
-                },
-                ...
-            ],
+        [
+            {
+                "week": 1,
+                "day": 1,
+                "exercise": 0,
+                "sets": 5,
+                "reps": 5,
+                "weight": 45
+            },
             ...
-        }
+        ]
         ```
 
         #### Sample Response
         ```
         {
             "program": {
-                "id": 11,
-                "name": "Super",
-                "length": 10,
-                "description": "World."
+                "id": 1,
+                "name": "StrongLifts 5x5",
+                "length": 30,
+                "description": "Hello"
             },
-            "days": {
-                "1": [
-                    {
-                        "id": 1,
-                        "exercise": 0,
-                        "day_of_week": 1,
-                        "sets": 5,
-                        "reps": 5,
-                        "weight": 45
-                    },
+            "weeks": {
+                "1": {
+                    "1": [
+                        {
+                            "id": 0,
+                            "exercise": 0,
+                            "sets": 5,
+                            "reps": 5,
+                            "weight": 45,
+                        },
+                        ...
+                    ],
                     ...
-                ],
+                },
                 ...
             }
         }
@@ -211,45 +201,48 @@ class WorkoutProgramsView(ProfileAuthedAPIView):
 class WorkoutProgramView(ProfileAuthedAPIView):
 
     @staticmethod
-    def get_workout_program(program, days, profile=None, default=None):
-        days_dict = {}
-        for day in days:
-            if day.day in days_dict:
-                days_dict[day.day].append(day)
-            else:
-                days_dict[day.day] = [day]
+    def get_workout_program(program, workout_days, profile=None, default=None):
+        weeks = {}
+
+        for workout_day in workout_days:
+            if workout_day.week not in weeks:
+                weeks[workout_day.week] = {}
+
+            if workout_day.day not in weeks[workout_day.week]:
+                weeks[workout_day.week][workout_day.day] = []
+
+            weeks[workout_day.week][workout_day.day].append(
+                WorkoutDaySerializer(workout_day).data,
+            )
 
         if profile:
-            for day, day_list in days_dict.items():
-                days_dict[day] = WorkoutDaySerializer(day_list, many=True).data
-                for i, workout_day in enumerate(days_dict[day]):
-                    workout_day = dict(workout_day)
-                    workout_day['log'] = None
-                    try:
-                        if default:
-                            workout_day['log'] = WorkoutLog.objects.get(
-                                profile=profile,
-                                workout_day=workout_day['id'],
-                            ).reps
-                        else:
-                            workout_day['log'] = CustomWorkoutLog.objects.get(
-                                profile=profile,
-                                workout_day=workout_day['id'],
-                            ).reps
-                    except (
-                        WorkoutLog.DoesNotExist,
-                        CustomWorkoutLog.DoesNotExist,
-                    ):
-                        pass
+            for week in weeks.values():
+                for days in week.values():
+                    for i, day in enumerate(days):
+                        day['log'] = None
 
-                    days_dict[day][i] = workout_day
-        else:
-            for day, day_list in days_dict.items():
-                days_dict[day] = WorkoutDaySerializer(day_list, many=True).data
+                        try:
+                            if default:
+                                day['log'] = WorkoutLog.objects.get(
+                                    profile=profile,
+                                    workout_day=day['id'],
+                                ).reps
+                            else:
+                                day['log'] = CustomWorkoutLog.objects.get(
+                                    profile=profile,
+                                    workout_day=day['id'],
+                                ).reps
+                        except (
+                            WorkoutLog.DoesNotExist,
+                            CustomWorkoutLog.DoesNotExist,
+                        ):
+                            pass
+
+                        days[i] = day
 
         return {
             'program': WorkoutProgramSerializer(program).data,
-            'days': days_dict,
+            'weeks': weeks,
         }
 
     def get(self, request, pk):
@@ -273,21 +266,31 @@ class WorkoutProgramView(ProfileAuthedAPIView):
                 "id": 1,
                 "name": "StrongLifts 5x5",
                 "length": 30,
-                "description": "Hey"
+                "description": "Hello"
             },
-            "days": {
-                "1": [
-                    {
-                        "id": 1,
-                        "exercise": 0,
-                        "day_of_week": 1,
-                        "sets": 5,
-                        "reps": 5,
-                        "weight": 45,
-                        "log": "5,5,5,4,3"
-                    },
+            "weeks": {
+                "1": {
+                    "1": [
+                        {
+                            "id": 0,
+                            "exercise": 0,
+                            "sets": 5,
+                            "reps": 5,
+                            "weight": 45,
+                            "log": "5,5,5,4,3"
+                        },
+                        {
+                            "id": 1,
+                            "exercise": 1,
+                            "sets": 5,
+                            "reps": 5,
+                            "weight": 45,
+                            "log": null
+                        },
+                        ...
+                    ],
                     ...
-                ],
+                },
                 ...
             }
         }
@@ -330,23 +333,23 @@ class WorkoutProgramView(ProfileAuthedAPIView):
         ##### Days format
 
         ```
-        {
-            "1":[
-                {
-                    "exercise": 0,
-                    "day_of_week": 1,
-                    "sets": 5,
-                    "reps": 5,
-                    "weight": 45
-                },
-                {
-                    "exercise": 3,
-                    "delete": true
-                },
-                ...
-            ],
+        [
+            {
+                "week": 1,
+                "day": 1,
+                "exercise": 0,
+                "sets": 5,
+                "reps": 5,
+                "weight": 45
+            },
+            {
+                "week": 1,
+                "day": 2,
+                "exercise" 0,
+                "delete": true
+            },
             ...
-        }
+        ]
         ```
 
         Delete a day's exercise with `"delete":true`
@@ -355,24 +358,24 @@ class WorkoutProgramView(ProfileAuthedAPIView):
         ```
         {
             "program": {
-                "id": 11,
-                "name": "Super",
-                "length": 10,
-                "description": "Gary."
+                "id": 4,
+                "name": "asd",
+                "length": 2,
+                "description": ""
             },
-            "days": {
-                "1": [
-                    {
-                        "exercise": 0,
-                        "day_of_week": 1,
-                        "sets": 5,
-                        "reps": 5,
-                        "weight": 45,
-                        "log": "5,5,5,4,3"
-                    },
-                    ...
-                ],
-                ...
+            "weeks": {
+                "1": {
+                    "1": [
+                        {
+                            "id": 4,
+                            "exercise": 0,
+                            "sets": 56,
+                            "reps": 5,
+                            "weight": 45,
+                            "log": null
+                        }
+                    ]
+                }
             }
         }
         ```
@@ -407,6 +410,7 @@ class WorkoutProgramView(ProfileAuthedAPIView):
                                 # TODO: Slow.
                                 day_set = program.customworkoutday_set
                                 existing_day = day_set.get(
+                                    week=day_data['week'],
                                     day=day_data['day'],
                                     exercise=day_data['exercise'],
                                 )

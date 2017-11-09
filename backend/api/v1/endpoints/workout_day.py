@@ -10,7 +10,6 @@ class WorkoutDaySerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'exercise',
-            'day_of_week',
             'sets',
             'reps',
             'weight',
@@ -24,9 +23,9 @@ class CustomWorkoutDaySerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'workout_program',
-            'day',
             'exercise',
-            'day_of_week',
+            'week',
+            'day',
             'sets',
             'reps',
             'weight',

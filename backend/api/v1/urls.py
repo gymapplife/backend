@@ -4,6 +4,7 @@ from api.v1.endpoints.media import MediasView
 from api.v1.endpoints.media import MediaView
 from api.v1.endpoints.personal_record import PersonalRecordView
 from api.v1.endpoints.profile import ProfileView
+from api.v1.endpoints.workout_log import WorkoutLogsView
 from api.v1.endpoints.workout_log import WorkoutLogView
 from api.v1.endpoints.workout_program import WorkoutProgramsView
 from api.v1.endpoints.workout_program import WorkoutProgramView
@@ -34,11 +35,11 @@ urlpatterns = [
         name='media',
     ),
     url(
-        r'^exercise/$', ExercisesView.as_view(),
+        r'^exercises/$', ExercisesView.as_view(),
         name='exercises',
     ),
     url(
-        r'^exercise/(?P<pk>[0-9]+)/$', ExerciseView.as_view(),
+        r'^exercises/(?P<pk>[0-9]+)/$', ExerciseView.as_view(),
         name='exercise',
     ),
     url(
@@ -46,7 +47,11 @@ urlpatterns = [
         name='personal_record',
     ),
     url(
-        r'^workout-log/$', WorkoutLogView.as_view(),
+        r'^workout-logs/$', WorkoutLogsView.as_view(),
+        name='workout_logs',
+    ),
+    url(
+        r'^workout-logs/(?P<pk>[0-9]+)/$', WorkoutLogView.as_view(),
         name='workout_log',
     ),
 ]
