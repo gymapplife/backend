@@ -1,5 +1,4 @@
 boto3==1.4.7
-botocore==1.7.36
 Django==1.11.7
 django-cors-headers==2.1.0
 django-rest-swagger==2.1.2
