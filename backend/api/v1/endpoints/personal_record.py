@@ -19,6 +19,37 @@ class PersonalRecordSerializer(serializers.ModelSerializer):
 
 class PersonalRecordView(ProfileAuthedAPIView):
 
+    @staticmethod
+    def create_update(data, increase_only=True):
+        try:
+            personal_record = PersonalRecord.objects.get(
+                profile=data['profile'],
+                exercise=data['exercise'],
+            )
+        except PersonalRecord.DoesNotExist:
+            personal_record = None
+
+        serializer = PersonalRecordSerializer(
+            personal_record,
+            data=data,
+        )
+
+        if serializer.is_valid():
+            if increase_only and (
+                personal_record
+                and personal_record.weight >= int(data['weight'])
+            ):
+                return PersonalRecordSerializer(
+                    personal_record,
+                ).data, False
+            serializer.save()
+            if personal_record:
+                return serializer.data, False
+            else:
+                return serializer.data, True
+
+        raise Exception('Should never happen.')
+
     def get(self, request):
         """Get all of your personal records
 
@@ -71,21 +102,12 @@ class PersonalRecordView(ProfileAuthedAPIView):
 
             return Response(errors, status=status.HTTP_400_BAD_REQUEST)
 
-        try:
-            personal_record = PersonalRecord.objects.get(
-                profile=request.profile,
-                exercise=request.data['exercise'],
-            )
-        except PersonalRecord.DoesNotExist:
-            personal_record = None
-
-        serializer = PersonalRecordSerializer(
-            personal_record,
-            data=request.data,
+        data, created = PersonalRecordView.create_update(
+            request.data,
+            increase_only=False,
         )
 
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-
-        raise Exception('Should never happen.')
+        if created:
+            return Response(data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(data)
