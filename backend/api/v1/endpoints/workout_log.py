@@ -1,8 +1,10 @@
+from api.v1.endpoints.personal_record import PersonalRecordView
 from api.views import ProfileAuthedAPIView
 from db_models.models.custom_workout_day import CustomWorkoutDay
 from db_models.models.custom_workout_log import CustomWorkoutLog
 from db_models.models.workout_day import WorkoutDay
 from db_models.models.workout_log import WorkoutLog
+from django.db import transaction
 from rest_framework import serializers
 from rest_framework import status
 from rest_framework.response import Response
@@ -16,6 +18,7 @@ class WorkoutLogSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'profile',
+            'created',
             'workout_day',
             'reps',
         )
@@ -28,6 +31,7 @@ class CustomWorkoutLogSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'profile',
+            'created',
             'workout_day',
             'reps',
         )
@@ -123,10 +127,16 @@ class WorkoutLogView(ProfileAuthedAPIView):
         serializer = Serializer(workout_log, data=request.data)
 
         if serializer.is_valid():
-            serializer.save()
+            with transaction.atomic():
+                serializer.save()
+                PersonalRecordView.create_update({
+                    'profile': request.profile.pk,
+                    'exercise': workout_day.exercise.pk,
+                    'weight': workout_day.weight,
+                })
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         errors = dict(serializer.errors)
         errors.pop('profile', None)
 
-        return Response(errors)
+        return Response(errors, status=status.HTTP_400_BAD_REQUEST)

@@ -3,6 +3,7 @@ from db_models.models.custom_workout_log import CustomWorkoutLog
 from db_models.models.custom_workout_program import CustomWorkoutProgram
 from db_models.models.day_of_week import DayOfWeek
 from db_models.models.exercise import Exercise
+from db_models.models.personal_record import PersonalRecord
 from db_models.models.profile import Profile
 from db_models.models.public_photo import PublicPhoto
 from db_models.models.public_video import PublicVideo
@@ -36,6 +37,12 @@ class ProfileAdmin(admin.ModelAdmin):
 class ExerciseAdmin(admin.ModelAdmin):
 
     list_display = ('name', 'primary_muscle', 'photo', 'video')
+
+
+@admin.register(PersonalRecord)
+class PersonalRecordAdmin(admin.ModelAdmin):
+
+    list_display = ('profile', 'exercise', 'weight')
 
 
 @admin.register(WorkoutProgram)
