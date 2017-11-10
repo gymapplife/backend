@@ -10,17 +10,30 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 import os
+import random
+import string
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
+SECRET_KEY = ''.join(
+    [
+        random.SystemRandom().choice(
+            '{}{}{}'.format(
+                string.ascii_letters,
+                string.digits,
+                string.punctuation,
+            ),
+        ) for i in range(50)
+    ],
+)
+
+
 if os.environ.get('DJANGO_DEBUG') == 'TRUE':
-    SECRET_KEY = 'q~wWC{PWGL2mOSz{OGLk9bal$~R*nhN5PX_cja4=TI@:Cvc>M4'
     DEBUG = True
 else:
-    SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
     DEBUG = False
     SECURE_HSTS_SECONDS = 31536000
     CSRF_COOKIE_SECURE = True
@@ -90,12 +103,24 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    },
-}
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        },
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ['RDS_DB_NAME'],
+            'USER': os.environ['RDS_USERNAME'],
+            'PASSWORD': os.environ['RDS_PASSWORD'],
+            'HOST': os.environ['RDS_HOSTNAME'],
+            'PORT': os.environ['RDS_PORT'],
+        },
+    }
 
 
 # Password validation
@@ -135,7 +160,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/var/www/gymapp.life/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 
 BASIC_AUTH_REALM = 'GymApp.life'

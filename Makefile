@@ -1,5 +1,6 @@
 install:
-	./scripts/install.sh
+	./scripts/setup.sh
+	./scripts/db.sh
 
 start-dev:
 	./scripts/start-dev.sh

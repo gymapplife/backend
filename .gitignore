@@ -2,6 +2,7 @@
 db.sqlite3
 
 backend/uploads/
+backend/static/
 
 # THIS IS TEMPORARY UNTIL WE SHARE A DATABASE
 backend/db_models/migrations/
