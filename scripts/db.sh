@@ -13,17 +13,7 @@ fi
 
 VENV_DIR="$ROOT_PATH/venv"
 
-if [ ! -d $VENV_DIR ]; then
-  python3.6 -m virtualenv $VENV_DIR
-fi
-
 source "$VENV_DIR/bin/activate"
-
-pip install --upgrade pip
-pip install -r "$ROOT_PATH/requirements.txt"
-pip install -r "$ROOT_PATH/requirements-dev.txt"
-
-pre-commit install
 
 cd "$ROOT_PATH/backend"
 
