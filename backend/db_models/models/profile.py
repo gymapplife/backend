@@ -48,6 +48,7 @@ class Profile(models.Model):
         'WorkoutProgram',
         on_delete=models.SET_NULL,
         null=True,
+        blank=True,
         default=None,
         related_name='current_workout_program',
     )
@@ -56,6 +57,7 @@ class Profile(models.Model):
         'CustomWorkoutProgram',
         on_delete=models.SET_NULL,
         null=True,
+        blank=True,
         default=None,
         related_name='current_custom_workout_program',
     )
