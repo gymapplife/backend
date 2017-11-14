@@ -37,8 +37,6 @@ class FoodLogAdmin(admin.ModelAdmin):
         'created',
         'calories',
         'meal',
-        'week',
-        'day',
     )
 
 

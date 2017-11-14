@@ -29,6 +29,3 @@ class FoodLog(models.Model):
         max_length=len(max(Meal._fields, key=len)),
         choices=_meal_choices,
     )
-
-    week = models.PositiveSmallIntegerField()
-    day = models.PositiveSmallIntegerField()

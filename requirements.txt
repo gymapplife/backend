@@ -2,8 +2,8 @@ boto3==1.4.7
 Django==1.11.7
 django-cors-headers==2.1.0
 django-rest-swagger==2.1.2
-djangorestframework==3.7.1
+djangorestframework==3.7.3
 facebook-sdk==2.0.0
 gunicorn==19.7.1
 psycopg2==2.7.3.2
-simplejson==3.11.1
+simplejson==3.12.0
