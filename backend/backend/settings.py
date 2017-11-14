@@ -18,23 +18,12 @@ import string
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
-SECRET_KEY = ''.join(
-    [
-        random.SystemRandom().choice(
-            '{}{}{}'.format(
-                string.ascii_letters,
-                string.digits,
-                string.punctuation,
-            ),
-        ) for i in range(50)
-    ],
-)
-
-
 if os.environ.get('DJANGO_DEBUG') == 'TRUE':
     DEBUG = True
+    SECRET_KEY = 'bL2`TvD8FBKR$IHX=lADj[oWMd1~@aLUHq?V&?mqkNMO69U{3U'
 else:
     DEBUG = False
+    SECRET_KEY = os.environ['DJANGO_SECRET_KEY'],
     # SECURE_HSTS_SECONDS = 31536000
     # CSRF_COOKIE_SECURE = True
     # SESSION_COOKIE_SECURE = True
@@ -114,11 +103,11 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ['RDS_DB_NAME'],
-            'USER': os.environ['RDS_USERNAME'],
+            'NAME': 'postgres',
+            'USER': 'postgres',
             'PASSWORD': os.environ['RDS_PASSWORD'],
             'HOST': os.environ['RDS_HOSTNAME'],
-            'PORT': os.environ['RDS_PORT'],
+            'PORT': '5432',
         },
     }
 
