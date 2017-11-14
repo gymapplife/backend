@@ -1,3 +1,4 @@
+import pytz
 from api.views import ProfileAuthedAPIView
 from db_models.models.food_log import FoodLog
 from rest_framework import serializers
@@ -13,7 +14,6 @@ class FoodLogSerializer(serializers.ModelSerializer):
         fields = (
             'id',
             'name',
-            'created',
             'calories',
         )
 
@@ -26,8 +26,6 @@ class CreateFoodLogSerializer(serializers.ModelSerializer):
             'id',
             'profile',
             'name',
-            'week',
-            'day',
             'created',
             'calories',
             'meal',
@@ -42,38 +40,38 @@ class FoodLogsView(ProfileAuthedAPIView):
         #### Sample Response
         ```
         {
-            "1": {
-                "1": {
-                    "DINNER": [
-                        {
-                            "id": 1,
-                            "name": "Pizza",
-                            "created": "2017-11-09T04:04:24.927630Z",
-                            "calories": 1000
-                        }
-                    ]
-                }
+            "2017-11-14": {
+                "BREAKFAST": [],
+                "DINNER": [
+                    {
+                        "id": 1,
+                        "name": "asd",
+                        "calories": 1,
+                        "time": "16:58:11.774818"
+                    }
+                ],
+                "LUNCH": [],
+                "SNACK": []
             }
         }
         ```
         """
         food_logs = FoodLog.objects.filter(
             profile=request.profile,
-        ).all()
+        ).order_by('created').all()
 
         result = {}
 
+        timezone = pytz.timezone('US/Eastern')
         for food_log in food_logs:
-            if food_log.week not in result:
-                result[food_log.week] = {}
-            if food_log.day not in result[food_log.week]:
-                result[food_log.week][food_log.day] = {}
-            if food_log.meal not in result[food_log.week][food_log.day]:
-                result[food_log.week][food_log.day][food_log.meal] = []
-
-            result[food_log.week][food_log.day][food_log.meal].append(
-                FoodLogSerializer(food_log).data,
-            )
+            created = food_log.created.astimezone(timezone)
+            date = str(created.date())
+            time = str(created.time())
+            if date not in result:
+                result[date] = {k: [] for k in FoodLog.Meal._fields}
+            data = FoodLogSerializer(food_log).data
+            data['time'] = time
+            result[date][food_log.meal].append(data)
 
         return Response(result)
 
@@ -82,20 +80,16 @@ class FoodLogsView(ProfileAuthedAPIView):
 
         #### Body Parameters
         * name: string
-        * week: string
-        * day: string
         * calories: string
         * meal: string
 
         #### Sample Response
         ```
         {
-            "id": 7,
+            "id": 1,
             "profile": 1,
             "name": "asd",
-            "week": 1,
-            "day": 1,
-            "created": "2017-11-09T04:21:04.122415Z",
+            "created": "2017-11-14T21:58:11.774818Z",
             "calories": 1,
             "meal": "DINNER"
         }
