@@ -4,8 +4,7 @@ from backend.settings import FB_APP_ID
 from backend.settings import FB_GRAPH_VERSION
 
 
-SCOPES = {'user_friends', 'public_profile'}
-
+SCOPES = {'name', 'email', 'picture', 'age_range'}
 
 def facebook_auth_error(uid, token):
     uid = str(uid)
