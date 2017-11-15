@@ -75,19 +75,13 @@ class MediasView(ProfileAuthedAPIView):
         #### Sample Response
         ```
         {
-            "public_photo": [
-                {
-                    "id": 2,
-                    "name": "Squat",
-                    "download_url": "some url"
-                }
-            ],
+            "public_photo": [],
             "public_video": [],
             "uploaded_photo": [
                 {
                     "id": 1,
-                    "name": "Hello World",
-                    "download_url": "some url"
+                    "name": "nameee",
+                    "download_url": "https://bopeng.io/assets/axongc.png"
                 }
             ],
             "uploaded_video": []
@@ -153,8 +147,16 @@ class MediasView(ProfileAuthedAPIView):
         ```
         {
             "id": 2,
-            "name": "heyoo",
-            "upload_url": "some url"
+            "name": "nameee",
+            "upload_info": {
+                "url": "https://gymapplife-uploaded-photo.s3.amazonaws.com/",
+                "fields": {
+                    "key": "9842a2c8-14fd-4fe7-b6c7-b3a99d0d4a6c",
+                    "AWSAccessKeyId": "AWSAccessKeyId",
+                    "policy": "policy",
+                    "signature": "signature"
+                }
+            }
         }
         ```
         """
@@ -206,9 +208,9 @@ class MediaView(ProfileAuthedAPIView):
         #### Sample Response
         ```
         {
-            "id": 7,
-            "name": "heyoo",
-            "download_url": "some download url"
+            "id": 1,
+            "name": "nameee",
+            "download_url": "https://bopeng.io/assets/axongc.png"
         }
         ```
         """
