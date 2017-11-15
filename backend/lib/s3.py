@@ -40,13 +40,9 @@ class _S3(_AbstractS3):
         self.client = boto3.client('s3')
 
     def get_upload_url(self, bucket, key):
-        resp = self.client.generate_presigned_url(
-            'put_object',
-            Params={
-                'Bucket': bucket,
-                'Key': key
-            },
-            HttpMethod='PUT'
+        resp = self.client.generate_presigned_post(
+            Bucket=bucket,
+            Key=key
         )
         return resp
 
