@@ -1,5 +1,7 @@
 import abc
+
 import boto3
+from botocore.exceptions import ClientError
 
 from backend.settings import DEBUG
 
@@ -7,7 +9,7 @@ from backend.settings import DEBUG
 class _AbstractS3(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
-    def get_upload_url(self, bucket, key):
+    def get_upload_dict(self, bucket, key):
         pass
 
     @abc.abstractmethod
@@ -21,11 +23,19 @@ class _AbstractS3(metaclass=abc.ABCMeta):
 
 class _MockS3(_AbstractS3):
 
-    def get_upload_url(self, bucket, key):
-        return f'upload | {bucket} | {key}'
+    def get_upload_dict(self, bucket, key):
+        return {
+            'url': f'https://{bucket}.s3.amazonaws.com/',
+            'fields': {
+                'key': key,
+                'AWSAccessKeyId': 'AWSAccessKeyId',
+                'policy': 'policy',
+                'signature': 'signature',
+            },
+        }
 
     def get_download_url(self, bucket, key):
-        return f'download | {bucket} | {key}'
+        return 'https://dongyuzheng.com/static/img/paper.png'
 
     def delete(self, bucket, key):
         pass
@@ -39,14 +49,10 @@ class _S3(_AbstractS3):
     def __init__(self):
         self.client = boto3.client('s3')
 
-    def get_upload_url(self, bucket, key):
-        resp = self.client.generate_presigned_url(
-            'put_object',
-            Params={
-                'Bucket': bucket,
-                'Key': key
-            },
-            HttpMethod='PUT'
+    def get_upload_dict(self, bucket, key):
+        resp = self.client.generate_presigned_post(
+            Bucket=bucket,
+            Key=key,
         )
         return resp
 
@@ -55,23 +61,25 @@ class _S3(_AbstractS3):
         """
         try:
             self.client.head_object(Bucket=bucket, Key=key)
-        except:
-            return None
+        except ClientError as e:
+            if e.response['Error']['Code'] == '404':
+                return None
+            raise
 
         resp = self.client.generate_presigned_url(
             'get_object',
             Params={
                 'Bucket': bucket,
-                'Key': key
+                'Key': key,
             },
-            HttpMethod='GET'
+            HttpMethod='GET',
         )
         return resp
 
     def delete(self, bucket, key):
         self.client.delete_object(
             Bucket=bucket,
-            Key=key
+            Key=key,
         )
 
 

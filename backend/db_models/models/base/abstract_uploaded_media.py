@@ -15,5 +15,5 @@ class AbstractUploadedMedia(AbstractMedia):
         db_index=True,
     )
 
-    def upload_url(self):
-        return S3.get_upload_url(self.s3_bucket, str(self.s3_key))
+    def upload_info(self):
+        return S3.get_upload_dict(self.s3_bucket, str(self.s3_key))
