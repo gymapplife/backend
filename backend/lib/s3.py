@@ -58,13 +58,9 @@ class _S3(_AbstractS3):
         except:
             return None
 
-        resp = self.client.generate_presigned_url(
-            'get_object',
-            Params={
-                'Bucket': bucket,
-                'Key': key
-            },
-            HttpMethod='GET'
+        resp = self.client.generate_presigned_post(
+            Bucket=bucket,
+            Key=key
         )
         return resp
 
