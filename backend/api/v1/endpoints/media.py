@@ -32,9 +32,9 @@ class UploadedPhotoSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'profile',
-            'upload_url',
+            'upload_info',
         )
-        read_only_fields = ('upload_url',)
+        read_only_fields = ('upload_info',)
 
 
 class UploadedVideoSerializer(serializers.ModelSerializer):
@@ -45,9 +45,9 @@ class UploadedVideoSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'profile',
-            'upload_url',
+            'upload_info',
         )
-        read_only_fields = ('upload_url',)
+        read_only_fields = ('upload_info',)
 
 
 class MediasView(ProfileAuthedAPIView):
