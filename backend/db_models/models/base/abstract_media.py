@@ -15,7 +15,7 @@ class AbstractMedia(models.Model):
     s3_key = models.UUIDField(default=uuid.uuid4, editable=False)
 
     def download_url(self):
-        download_url = S3.get_download_url(self.s3_bucket, self.s3_key)
+        download_url = S3.get_download_url(self.s3_bucket, str(self.s3_key))
 
         if not download_url:
             self.delete()
@@ -23,7 +23,7 @@ class AbstractMedia(models.Model):
         return download_url
 
     def delete(self):
-        S3.delete(self.s3_bucket, self.s3_key)
+        S3.delete(self.s3_bucket, str(self.s3_key))
         super().delete()
 
     def __str__(self):
